@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>지점 찾기 — 5가지 샘플</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        color: #1a1a1a;
+        background: #f5f5f3;
+        min-height: 100vh;
+        padding: 1.5rem;
+      }
+      .container {
+        max-width: 860px;
+        margin: 0 auto;
+        background: #fff;
+        border-radius: 16px;
+        border: 1px solid #e5e5e0;
+        overflow: hidden;
+      }
+      h1 {
+        font-size: 18px;
+        font-weight: 500;
+        padding: 1.25rem 1.5rem;
+        border-bottom: 1px solid #e5e5e0;
+        color: #1a1a1a;
+      }
+
+      .tab-bar {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+        padding: 1rem 1.5rem 0;
+        border-bottom: 1px solid #e5e5e0;
+        margin-bottom: 1.5rem;
+      }
+      .tab {
+        padding: 6px 14px;
+        border: 1px solid #d0d0c8;
+        border-radius: 8px;
+        font-size: 13px;
+        background: transparent;
+        color: #666;
+        cursor: pointer;
+        transition: all 0.15s;
+      }
+      .tab.active {
+        background: #f0f0ec;
+        color: #1a1a1a;
+        border-color: #aaa;
+        font-weight: 500;
+      }
+      .panel {
+        display: none;
+        padding: 0 1.5rem 1.5rem;
+      }
+      .panel.active {
+        display: block;
+      }
+
+      .section-label {
+        font-size: 11px;
+        font-weight: 500;
+        color: #999;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        margin-bottom: 0.75rem;
+      }
+
+      /* 1. Card + Filter */
+      .filter-bar {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin-bottom: 1rem;
+      }
+      .filter-btn {
+        padding: 5px 12px;
+        border: 1px solid #d0d0c8;
+        border-radius: 20px;
+        font-size: 12px;
+        background: transparent;
+        color: #666;
+        cursor: pointer;
+        transition: all 0.15s;
+      }
+      .filter-btn.active {
+        background: #f0f0ec;
+        color: #1a1a1a;
+        border-color: #aaa;
+      }
+      .card-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 10px;
+      }
+      .branch-card {
+        background: #fff;
+        border: 1px solid #e5e5e0;
+        border-radius: 12px;
+        padding: 1rem;
+        transition: border-color 0.15s;
+      }
+      .branch-card:hover {
+        border-color: #aaa;
+      }
+      .branch-card h3 {
+        font-size: 14px;
+        font-weight: 500;
+        margin-bottom: 4px;
+      }
+      .branch-card .city {
+        font-size: 12px;
+        color: #888;
+        margin-bottom: 8px;
+      }
+      .branch-card .tag {
+        display: inline-block;
+        font-size: 11px;
+        padding: 2px 8px;
+        border-radius: 20px;
+        background: #e8f0fe;
+        color: #1a56db;
+      }
+      .branch-card .info {
+        font-size: 12px;
+        color: #888;
+        margin-top: 8px;
+        line-height: 1.6;
+      }
+
+      /* 2. Accordion */
+      .accordion-group {
+        border: 1px solid #e5e5e0;
+        border-radius: 12px;
+        overflow: hidden;
+      }
+      .acc-header {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 16px;
+        background: #f8f8f6;
+        border: none;
+        border-bottom: 1px solid #e5e5e0;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 500;
+        color: #1a1a1a;
+      }
+      .acc-arrow {
+        font-size: 12px;
+        transition: transform 0.2s;
+        color: #999;
+      }
+      .acc-body {
+        display: none;
+        padding: 0;
+      }
+      .acc-body.open {
+        display: block;
+      }
+      .acc-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 16px;
+        border-bottom: 1px solid #e5e5e0;
+        font-size: 13px;
+      }
+      .acc-item:last-child {
+        border-bottom: none;
+      }
+      .acc-item .name {
+        font-weight: 500;
+      }
+      .acc-item .city {
+        color: #888;
+        font-size: 12px;
+      }
+      .acc-count {
+        font-size: 11px;
+        padding: 2px 8px;
+        background: #f0f0ec;
+        border-radius: 20px;
+        color: #888;
+        margin-left: 8px;
+      }
+
+      /* 3. Responsive Map+List */
+      .responsive-wrap {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+      }
+      @media (max-width: 600px) {
+        .responsive-wrap {
+          grid-template-columns: 1fr;
+        }
+      }
+      .map-placeholder {
+        background: #f8f8f6;
+        border: 1px solid #e5e5e0;
+        border-radius: 12px;
+        min-height: 200px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        color: #bbb;
+        font-size: 13px;
+      }
+      .mini-list {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .mini-item {
+        background: #fff;
+        border: 1px solid #e5e5e0;
+        border-radius: 8px;
+        padding: 10px 12px;
+      }
+      .mini-item h4 {
+        font-size: 13px;
+        font-weight: 500;
+      }
+      .mini-item p {
+        font-size: 12px;
+        color: #888;
+        margin-top: 2px;
+      }
+      .mobile-badge {
+        display: inline-block;
+        font-size: 10px;
+        padding: 2px 6px;
+        border-radius: 4px;
+        background: #dcfce7;
+        color: #15803d;
+        margin-bottom: 6px;
+      }
+      .desktop-badge {
+        display: inline-block;
+        font-size: 10px;
+        padding: 2px 6px;
+        border-radius: 4px;
+        background: #e8f0fe;
+        color: #1a56db;
+        margin-bottom: 6px;
+      }
+
+      /* 4. Search UI */
+      .search-wrap {
+        position: relative;
+        margin-bottom: 1rem;
+      }
+      .search-wrap input {
+        width: 100%;
+        padding: 10px 16px 10px 36px;
+        border: 1px solid #d0d0c8;
+        border-radius: 12px;
+        font-size: 14px;
+        background: #fff;
+        color: #1a1a1a;
+        outline: none;
+      }
+      .search-wrap input:focus {
+        border-color: #aaa;
+      }
+      .search-icon {
+        position: absolute;
+        left: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #bbb;
+        font-size: 14px;
+        pointer-events: none;
+      }
+      .result-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 0;
+        border-bottom: 1px solid #e5e5e0;
+      }
+      .result-item:last-child {
+        border-bottom: none;
+      }
+      .result-item .name {
+        font-size: 14px;
+        font-weight: 500;
+      }
+      .result-item .detail {
+        font-size: 12px;
+        color: #888;
+        margin-top: 2px;
+      }
+      .result-state {
+        font-size: 12px;
+        padding: 3px 10px;
+        border-radius: 20px;
+        background: #f0f0ec;
+        color: #666;
+      }
+      .no-result {
+        text-align: center;
+        padding: 2rem;
+        color: #bbb;
+        font-size: 14px;
+      }
+
+      /* 5. Table */
+      .table-controls {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 1rem;
+        flex-wrap: wrap;
+      }
+      .table-controls select {
+        padding: 6px 12px;
+        border: 1px solid #d0d0c8;
+        border-radius: 8px;
+        font-size: 13px;
+        background: #fff;
+        color: #1a1a1a;
+        outline: none;
+      }
+      .tbl-wrap {
+        overflow-x: auto;
+        border: 1px solid #e5e5e0;
+        border-radius: 12px;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 13px;
+      }
+      thead th {
+        background: #f8f8f6;
+        padding: 10px 12px;
+        text-align: left;
+        font-weight: 500;
+        font-size: 12px;
+        color: #888;
+        border-bottom: 1px solid #e5e5e0;
+        white-space: nowrap;
+        cursor: pointer;
+        user-select: none;
+      }
+      thead th:hover {
+        color: #1a1a1a;
+      }
+      tbody tr {
+        border-bottom: 1px solid #e5e5e0;
+      }
+      tbody tr:last-child {
+        border-bottom: none;
+      }
+      tbody tr:hover {
+        background: #f8f8f6;
+      }
+      tbody td {
+        padding: 10px 12px;
+        vertical-align: middle;
+      }
+      .status-dot {
+        display: inline-block;
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        margin-right: 6px;
+      }
+      .dot-open {
+        background: #22c55e;
+      }
+      .dot-closed {
+        background: #ef4444;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>지점 찾기 — 5가지 UI 샘플</h1>
+
+      <div class="tab-bar">
+        <button class="tab active" onclick="switchTab(0)">
+          1. 카드 + 필터
+        </button>
+        <button class="tab" onclick="switchTab(1)">2. 아코디언</button>
+        <button class="tab" onclick="switchTab(2)">3. 맵 + 리스트</button>
+        <button class="tab" onclick="switchTab(3)">4. 검색 UI</button>
+        <button class="tab" onclick="switchTab(4)">5. 테이블</button>
+      </div>
+
+      <!-- Panel 1 -->
+      <div class="panel active" id="p0">
+        <p class="section-label">지역 필터</p>
+        <div class="filter-bar">
+          <button class="filter-btn active" onclick="filterCards(this,'all')">
+            전체
+          </button>
+          <button class="filter-btn" onclick="filterCards(this,'west')">
+            West Coast
+          </button>
+          <button class="filter-btn" onclick="filterCards(this,'east')">
+            East Coast
+          </button>
+          <button class="filter-btn" onclick="filterCards(this,'central')">
+            Central
+          </button>
+        </div>
+        <div class="card-grid" id="card-grid">
+          <div class="branch-card" data-region="west">
+            <h3>Los Angeles</h3>
+            <div class="city">California · CA</div>
+            <span class="tag">West Coast</span>
+            <div class="info">
+              123 Main St<br />Mon–Fri 9am–6pm<br />(213) 555-0101
+            </div>
+          </div>
+          <div class="branch-card" data-region="west">
+            <h3>San Francisco</h3>
+            <div class="city">California · CA</div>
+            <span class="tag">West Coast</span>
+            <div class="info">
+              456 Market St<br />Mon–Fri 9am–6pm<br />(415) 555-0202
+            </div>
+          </div>
+          <div class="branch-card" data-region="west">
+            <h3>Seattle</h3>
+            <div class="city">Washington · WA</div>
+            <span class="tag">West Coast</span>
+            <div class="info">
+              789 Pine Ave<br />Mon–Sat 9am–5pm<br />(206) 555-0303
+            </div>
+          </div>
+          <div class="branch-card" data-region="east">
+            <h3>New York</h3>
+            <div class="city">New York · NY</div>
+            <span class="tag">East Coast</span>
+            <div class="info">
+              321 5th Ave<br />Mon–Fri 8am–7pm<br />(212) 555-0404
+            </div>
+          </div>
+          <div class="branch-card" data-region="east">
+            <h3>Boston</h3>
+            <div class="city">Massachusetts · MA</div>
+            <span class="tag">East Coast</span>
+            <div class="info">
+              654 Boylston St<br />Mon–Fri 9am–6pm<br />(617) 555-0505
+            </div>
+          </div>
+          <div class="branch-card" data-region="central">
+            <h3>Chicago</h3>
+            <div class="city">Illinois · IL</div>
+            <span class="tag">Central</span>
+            <div class="info">
+              987 Michigan Ave<br />Mon–Fri 9am–6pm<br />(312) 555-0606
+            </div>
+          </div>
+          <div class="branch-card" data-region="central">
+            <h3>Dallas</h3>
+            <div class="city">Texas · TX</div>
+            <span class="tag">Central</span>
+            <div class="info">
+              147 Commerce St<br />Mon–Sat 9am–5pm<br />(214) 555-0707
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Panel 2 -->
+      <div class="panel" id="p1">
+        <div class="accordion-group">
+          <button class="acc-header" onclick="toggleAcc(this)">
+            <span>West Coast <span class="acc-count">3개 지점</span></span>
+            <span class="acc-arrow">▼</span>
+          </button>
+          <div class="acc-body open">
+            <div class="acc-item">
+              <div>
+                <div class="name">Los Angeles</div>
+                <div class="city">California</div>
+              </div>
+              <span style="font-size: 12px; color: #888">(213) 555-0101</span>
+            </div>
+            <div class="acc-item">
+              <div>
+                <div class="name">San Francisco</div>
+                <div class="city">California</div>
+              </div>
+              <span style="font-size: 12px; color: #888">(415) 555-0202</span>
+            </div>
+            <div class="acc-item">
+              <div>
+                <div class="name">Seattle</div>
+                <div class="city">Washington</div>
+              </div>
+              <span style="font-size: 12px; color: #888">(206) 555-0303</span>
+            </div>
+          </div>
+          <button class="acc-header" onclick="toggleAcc(this)">
+            <span>East Coast <span class="acc-count">2개 지점</span></span>
+            <span class="acc-arrow">▶</span>
+          </button>
+          <div class="acc-body">
+            <div class="acc-item">
+              <div>
+                <div class="name">New York</div>
+                <div class="city">New York</div>
+              </div>
+              <span style="font-size: 12px; color: #888">(212) 555-0404</span>
+            </div>
+            <div class="acc-item">
+              <div>
+                <div class="name">Boston</div>
+                <div class="city">Massachusetts</div>
+              </div>
+              <span style="font-size: 12px; color: #888">(617) 555-0505</span>
+            </div>
+          </div>
+          <button
+            class="acc-header"
+            onclick="toggleAcc(this)"
+            style="border-bottom: none"
+          >
+            <span>Central <span class="acc-count">2개 지점</span></span>
+            <span class="acc-arrow">▶</span>
+          </button>
+          <div class="acc-body">
+            <div class="acc-item">
+              <div>
+                <div class="name">Chicago</div>
+                <div class="city">Illinois</div>
+              </div>
+              <span style="font-size: 12px; color: #888">(312) 555-0606</span>
+            </div>
+            <div class="acc-item">
+              <div>
+                <div class="name">Dallas</div>
+                <div class="city">Texas</div>
+              </div>
+              <span style="font-size: 12px; color: #888">(214) 555-0707</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Panel 3 -->
+      <div class="panel" id="p2">
+        <div class="responsive-wrap">
+          <div>
+            <div class="desktop-badge">데스크톱 전용</div>
+            <div class="map-placeholder">
+              <svg width="48" height="36" viewBox="0 0 48 36" fill="none">
+                <rect
+                  x="2"
+                  y="2"
+                  width="44"
+                  height="32"
+                  rx="3"
+                  stroke="#ccc"
+                  stroke-width="1.5"
+                />
+                <circle cx="16" cy="16" r="3" fill="#ccc" />
+                <circle cx="28" cy="12" r="3" fill="#ccc" />
+                <circle cx="22" cy="24" r="3" fill="#ccc" />
+                <circle cx="36" cy="20" r="3" fill="#ccc" />
+              </svg>
+              <span>SVG 미국 지도</span>
+              <span style="font-size: 11px">클릭으로 지점 선택</span>
+            </div>
+          </div>
+          <div>
+            <div class="mobile-badge">모바일 fallback</div>
+            <div class="mini-list">
+              <div class="mini-item">
+                <h4>Los Angeles, CA</h4>
+                <p>123 Main St · (213) 555-0101</p>
+              </div>
+              <div class="mini-item">
+                <h4>New York, NY</h4>
+                <p>321 5th Ave · (212) 555-0404</p>
+              </div>
+              <div class="mini-item">
+                <h4>Chicago, IL</h4>
+                <p>987 Michigan Ave · (312) 555-0606</p>
+              </div>
+              <div class="mini-item">
+                <h4>Seattle, WA</h4>
+                <p>789 Pine Ave · (206) 555-0303</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Panel 4 -->
+      <div class="panel" id="p3">
+        <div class="search-wrap">
+          <span class="search-icon">&#128269;</span>
+          <input
+            type="text"
+            id="search-input"
+            placeholder="도시 또는 주 이름으로 검색..."
+            oninput="doSearch(this.value)"
+          />
+        </div>
+        <div id="search-results">
+          <div class="result-item">
+            <div>
+              <div class="name">Los Angeles</div>
+              <div class="detail">123 Main St, California · (213) 555-0101</div>
+            </div>
+            <span class="result-state">CA</span>
+          </div>
+          <div class="result-item">
+            <div>
+              <div class="name">San Francisco</div>
+              <div class="detail">
+                456 Market St, California · (415) 555-0202
+              </div>
+            </div>
+            <span class="result-state">CA</span>
+          </div>
+          <div class="result-item">
+            <div>
+              <div class="name">Seattle</div>
+              <div class="detail">
+                789 Pine Ave, Washington · (206) 555-0303
+              </div>
+            </div>
+            <span class="result-state">WA</span>
+          </div>
+          <div class="result-item">
+            <div>
+              <div class="name">New York</div>
+              <div class="detail">321 5th Ave, New York · (212) 555-0404</div>
+            </div>
+            <span class="result-state">NY</span>
+          </div>
+          <div class="result-item">
+            <div>
+              <div class="name">Boston</div>
+              <div class="detail">
+                654 Boylston St, Massachusetts · (617) 555-0505
+              </div>
+            </div>
+            <span class="result-state">MA</span>
+          </div>
+          <div class="result-item">
+            <div>
+              <div class="name">Chicago</div>
+              <div class="detail">
+                987 Michigan Ave, Illinois · (312) 555-0606
+              </div>
+            </div>
+            <span class="result-state">IL</span>
+          </div>
+          <div class="result-item">
+            <div>
+              <div class="name">Dallas</div>
+              <div class="detail">147 Commerce St, Texas · (214) 555-0707</div>
+            </div>
+            <span class="result-state">TX</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Panel 5 -->
+      <div class="panel" id="p4">
+        <div class="table-controls">
+          <select onchange="filterTable(this.value)">
+            <option value="all">전체 지역</option>
+            <option value="West Coast">West Coast</option>
+            <option value="East Coast">East Coast</option>
+            <option value="Central">Central</option>
+          </select>
+        </div>
+        <div class="tbl-wrap">
+          <table id="branch-table">
+            <thead>
+              <tr>
+                <th onclick="sortTable(0)">도시 ↕</th>
+                <th onclick="sortTable(1)">주 ↕</th>
+                <th onclick="sortTable(2)">지역 ↕</th>
+                <th>전화번호</th>
+                <th>영업시간</th>
+              </tr>
+            </thead>
+            <tbody id="table-body">
+              <tr data-region="West Coast">
+                <td>Los Angeles</td>
+                <td>CA</td>
+                <td>West Coast</td>
+                <td>(213) 555-0101</td>
+                <td><span class="status-dot dot-open"></span>9am–6pm</td>
+              </tr>
+              <tr data-region="West Coast">
+                <td>San Francisco</td>
+                <td>CA</td>
+                <td>West Coast</td>
+                <td>(415) 555-0202</td>
+                <td><span class="status-dot dot-open"></span>9am–6pm</td>
+              </tr>
+              <tr data-region="West Coast">
+                <td>Seattle</td>
+                <td>WA</td>
+                <td>West Coast</td>
+                <td>(206) 555-0303</td>
+                <td><span class="status-dot dot-open"></span>9am–5pm</td>
+              </tr>
+              <tr data-region="East Coast">
+                <td>New York</td>
+                <td>NY</td>
+                <td>East Coast</td>
+                <td>(212) 555-0404</td>
+                <td><span class="status-dot dot-open"></span>8am–7pm</td>
+              </tr>
+              <tr data-region="East Coast">
+                <td>Boston</td>
+                <td>MA</td>
+                <td>East Coast</td>
+                <td>(617) 555-0505</td>
+                <td><span class="status-dot dot-closed"></span>9am–6pm</td>
+              </tr>
+              <tr data-region="Central">
+                <td>Chicago</td>
+                <td>IL</td>
+                <td>Central</td>
+                <td>(312) 555-0606</td>
+                <td><span class="status-dot dot-open"></span>9am–6pm</td>
+              </tr>
+              <tr data-region="Central">
+                <td>Dallas</td>
+                <td>TX</td>
+                <td>Central</td>
+                <td>(214) 555-0707</td>
+                <td><span class="status-dot dot-open"></span>9am–5pm</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function switchTab(i) {
+        document
+          .querySelectorAll(".tab")
+          .forEach((t, j) => t.classList.toggle("active", i === j));
+        document
+          .querySelectorAll(".panel")
+          .forEach((p, j) => p.classList.toggle("active", i === j));
+      }
+      function filterCards(btn, region) {
+        document
+          .querySelectorAll(".filter-btn")
+          .forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+        document.querySelectorAll(".branch-card").forEach((c) => {
+          c.style.display =
+            region === "all" || c.dataset.region === region ? "" : "none";
+        });
+      }
+      function toggleAcc(btn) {
+        const body = btn.nextElementSibling;
+        const arrow = btn.querySelector(".acc-arrow");
+        const open = body.classList.toggle("open");
+        arrow.textContent = open ? "▼" : "▶";
+      }
+      function doSearch(q) {
+        const v = q.toLowerCase();
+        const items = document.querySelectorAll("#search-results .result-item");
+        let found = 0;
+        items.forEach((item) => {
+          const match = item.textContent.toLowerCase().includes(v);
+          item.style.display = match ? "" : "none";
+          if (match) found++;
+        });
+        const nr = document.getElementById("no-result");
+        if (!found) {
+          if (!nr) {
+            const d = document.createElement("div");
+            d.id = "no-result";
+            d.className = "no-result";
+            d.textContent = "검색 결과가 없습니다";
+            document.getElementById("search-results").appendChild(d);
+          }
+        } else {
+          if (nr) nr.remove();
+        }
+      }
+      function filterTable(region) {
+        document.querySelectorAll("#table-body tr").forEach((tr) => {
+          tr.style.display =
+            region === "all" || tr.dataset.region === region ? "" : "none";
+        });
+      }
+      function sortTable(col) {
+        const tbody = document.getElementById("table-body");
+        const rows = Array.from(tbody.querySelectorAll("tr"));
+        rows.sort((a, b) =>
+          a.cells[col].textContent
+            .trim()
+            .localeCompare(b.cells[col].textContent.trim())
+        );
+        rows.forEach((r) => tbody.appendChild(r));
+      }
+    </script>
+  </body>
+</html>

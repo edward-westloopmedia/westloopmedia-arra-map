@@ -1,0 +1,664 @@
+<style>
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    color: #1a1a1a;
+    background: #f5f5f3;
+    min-height: 100vh;
+    padding: 1.5rem;
+  }
+  .container {
+    max-width: 860px;
+    margin: 0 auto;
+    background: #fff;
+    border-radius: 16px;
+    border: 1px solid #e5e5e0;
+    overflow: hidden;
+  }
+  h1 {
+    font-size: 18px;
+    font-weight: 500;
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid #e5e5e0;
+    color: #1a1a1a;
+  }
+
+  .tab-bar {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    padding: 1rem 1.5rem 0;
+    border-bottom: 1px solid #e5e5e0;
+    margin-bottom: 1.5rem;
+  }
+  .tab {
+    padding: 6px 14px;
+    border: 1px solid #d0d0c8;
+    border-radius: 8px;
+    font-size: 13px;
+    background: transparent;
+    color: #666;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .tab.active {
+    background: #f0f0ec;
+    color: #1a1a1a;
+    border-color: #aaa;
+    font-weight: 500;
+  }
+  .panel {
+    display: none;
+    padding: 0 1.5rem 1.5rem;
+  }
+  .panel.active {
+    display: block;
+  }
+
+  .section-label {
+    font-size: 11px;
+    font-weight: 500;
+    color: #999;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+  }
+
+  /* 1. Card + Filter */
+  .filter-bar {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+  }
+  .filter-btn {
+    padding: 5px 12px;
+    border: 1px solid #d0d0c8;
+    border-radius: 20px;
+    font-size: 12px;
+    background: transparent;
+    color: #666;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .filter-btn.active {
+    background: #f0f0ec;
+    color: #1a1a1a;
+    border-color: #aaa;
+  }
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 10px;
+  }
+  .branch-card {
+    background: #fff;
+    border: 1px solid #e5e5e0;
+    border-radius: 12px;
+    padding: 1rem;
+    transition: border-color 0.15s;
+  }
+  .branch-card:hover {
+    border-color: #aaa;
+  }
+  .branch-card h3 {
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 4px;
+  }
+  .branch-card .city {
+    font-size: 12px;
+    color: #888;
+    margin-bottom: 8px;
+  }
+  .branch-card .tag {
+    display: inline-block;
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 20px;
+    background: #e8f0fe;
+    color: #1a56db;
+  }
+  .branch-card .info {
+    font-size: 12px;
+    color: #888;
+    margin-top: 8px;
+    line-height: 1.6;
+  }
+
+  .links {
+    display: flex;
+    flex-direction: column;
+    margin: 5px;
+    a {
+      text-decoration: none;
+      font-size: 15px;
+      margin: 2px;
+      color: #666;
+    }
+  }
+</style>
+
+<div class="panel active" id="p0">
+  <div class="filter-bar">
+    <button class="filter-btn active" onclick="filterCards(this,'all')">
+      All
+    </button>
+    <button class="filter-btn" onclick="filterCards(this,'west')">
+      West Coast
+    </button>
+    <button class="filter-btn" onclick="filterCards(this,'east')">
+      East Coast
+    </button>
+    <button class="filter-btn" onclick="filterCards(this,'central')">
+      Central
+    </button>
+  </div>
+  <div class="card-grid" id="card-grid">
+    <!-- WEST -->
+    <div class="branch-card" data-region="west">
+      <h3>Los Angeles</h3>
+      <div class="city">California · CA</div>
+      <span class="tag">West Coast</span>
+      <div class="links">
+        <a href="#">Los Angeles Sample 1</a><a href="#">Los Angeles Sample 2</a
+        ><a href="#">Los Angeles Sample 3</a>
+      </div>
+    </div>
+    <div class="branch-card" data-region="west">
+      <h3>San Francisco</h3>
+      <div class="city">California · CA</div>
+      <span class="tag">West Coast</span>
+      <div class="links">
+        <a href="#">San Francisco Sample 1</a
+        ><a href="#">San Francisco Sample 2</a
+        ><a href="#">San Francisco Sample 3</a>
+      </div>
+    </div>
+    <div class="branch-card" data-region="west">
+      <h3>Seattle</h3>
+      <div class="city">Washington · WA</div>
+      <span class="tag">West Coast</span>
+      <div class="links">
+        <a href="#">Seattle Sample 1</a><a href="#">Seattle Sample 2</a
+        ><a href="#">Seattle Sample 3</a>
+      </div>
+    </div>
+    <div class="branch-card" data-region="west">
+      <h3>Portland</h3>
+      <div class="city">Oregon · OR</div>
+      <span class="tag">West Coast</span>
+      <div class="links">
+        <a href="#">Portland Sample 1</a><a href="#">Portland Sample 2</a
+        ><a href="#">Portland Sample 3</a>
+      </div>
+    </div>
+    <div class="branch-card" data-region="west">
+      <h3>Las Vegas</h3>
+      <div class="city">Nevada · NV</div>
+      <span class="tag">West Coast</span>
+      <div class="links">
+        <a href="#">Las Vegas Sample 1</a><a href="#">Las Vegas Sample 2</a
+        ><a href="#">Las Vegas Sample 3</a>
+      </div>
+    </div>
+    <div class="branch-card" data-region="west">
+      <h3>Phoenix</h3>
+      <div class="city">Arizona · AZ</div>
+      <span class="tag">West Coast</span>
+      <div class="links">
+        <a href="#">Phoenix Sample 1</a><a href="#">Phoenix Sample 2</a
+        ><a href="#">Phoenix Sample 3</a>
+      </div>
+    </div>
+    <div class="branch-card" data-region="west">
+      <h3>Salt Lake City</h3>
+      <div class="city">Utah · UT</div>
+      <span class="tag">West Coast</span>
+      <div class="links">
+        <a href="#">Salt Lake City Sample 1</a
+        ><a href="#">Salt Lake City Sample 2</a
+        ><a href="#">Salt Lake City Sample 3</a>
+      </div>
+    </div>
+    <div class="branch-card" data-region="west">
+      <h3>Denver</h3>
+      <div class="city">Colorado · CO</div>
+      <span class="tag">West Coast</span>
+      <div class="links">
+        <a href="#">Denver Sample 1</a><a href="#">Denver Sample 2</a
+        ><a href="#">Denver Sample 3</a>
+      </div>
+    </div>
+    <div class="branch-card" data-region="west">
+      <h3>Boise</h3>
+      <div class="city">Idaho · ID</div>
+      <span class="tag">West Coast</span>
+      <div class="links">
+        <a href="#">Boise Sample 1</a><a href="#">Boise Sample 2</a
+        ><a href="#">Boise Sample 3</a>
+      </div>
+    </div>
+    <div class="branch-card" data-region="west">
+      <h3>Helena</h3>
+      <div class="city">Montana · MT</div>
+      <span class="tag">West Coast</span>
+      <div class="links">
+        <a href="#">Helena Sample 1</a><a href="#">Helena Sample 2</a
+        ><a href="#">Helena Sample 3</a>
+      </div>
+    </div>
+    <div class="branch-card" data-region="west">
+      <h3>Cheyenne</h3>
+      <div class="city">Wyoming · WY</div>
+      <span class="tag">West Coast</span>
+      <div class="links">
+        <a href="#">Cheyenne Sample 1</a><a href="#">Cheyenne Sample 2</a
+        ><a href="#">Cheyenne Sample 3</a>
+      </div>
+    </div>
+    <div class="branch-card" data-region="west">
+      <h3>Anchorage</h3>
+      <div class="city">Alaska · AK</div>
+      <span class="tag">West Coast</span>
+      <div class="links">
+        <a href="#">Anchorage Sample 1</a><a href="#">Anchorage Sample 2</a
+        ><a href="#">Anchorage Sample 3</a>
+      </div>
+    </div>
+    <div class="branch-card" data-region="west">
+      <h3>Honolulu</h3>
+      <div class="city">Hawaii · HI</div>
+      <span class="tag">West Coast</span>
+      <div class="links">
+        <a href="#">Honolulu Sample 1</a><a href="#">Honolulu Sample 2</a
+        ><a href="#">Honolulu Sample 3</a>
+      </div>
+    </div>
+    <div class="branch-card" data-region="west">
+      <h3>Albuquerque</h3>
+      <div class="city">New Mexico · NM</div>
+      <span class="tag">West Coast</span>
+      <div class="links">
+        <a href="#">Albuquerque Sample 1</a><a href="#">Albuquerque Sample 2</a
+        ><a href="#">Albuquerque Sample 3</a>
+      </div>
+    </div>
+
+    <!-- CENTRAL -->
+    <div class="branch-card" data-region="central">
+      <h3>Chicago</h3>
+      <div class="city">Illinois · IL</div>
+      <span class="tag">Central</span>
+      <div class="links">
+        <a href="#">Chicago Sample 1</a><a href="#">Chicago Sample 2</a
+        ><a href="#">Chicago Sample 3</a>
+      </div>
+    </div>
+    <div class="branch-card" data-region="central">
+      <h3>Dallas</h3>
+      <div class="city">Texas · TX</div>
+      <span class="tag">Central</span>
+      <div class="links">
+        <a href="#">Dallas Sample 1</a><a href="#">Dallas Sample 2</a
+        ><a href="#">Dallas Sample 3</a>
+      </div>
+    </div>
+    <div class="branch-card" data-region="central">
+      <h3>Houston</h3>
+      <div class="city">Texas · TX</div>
+      <span class="tag">Central</span>
+      <div class="links">
+        <a href="#">Houston Sample 1</a><a href="#">Houston Sample 2</a
+        ><a href="#">Houston Sample 3</a>
+      </div>
+    </div>
+    <div class="branch-card" data-region="central">
+      <h3>Austin</h3>
+      <div class="city">Texas · TX</div>
+      <span class="tag">Central</span>
+      <div class="links">
+        <a href="#">Austin Sample 1</a><a href="#">Austin Sample 2</a
+        ><a href="#">Austin Sample 3</a>
+      </div>
+    </div>
+    <div class="branch-card" data-region="central">
+      <h3>Oklahoma City</h3>
+      <div class="city">Oklahoma · OK</div>
+      <span class="tag">Central</span>
+      <div class="links">
+        <a href="#">Oklahoma City Sample 1</a
+        ><a href="#">Oklahoma City Sample 2</a
+        ><a href="#">Oklahoma City Sample 3</a>
+      </div>
+    </div>
+    <div class="branch-card" data-region="central">
+      <h3>Kansas City</h3>
+      <div class="city">Missouri · MO</div>
+      <span class="tag">Central</span>
+      <div class="links">
+        <a href="#">Kansas City Sample 1</a><a href="#">Kansas City Sample 2</a
+        ><a href="#">Kansas City Sample 3</a>
+      </div>
+    </div>
+    <div class="branch-card" data-region="central">
+      <h3>Omaha</h3>
+      <div class="city">Nebraska · NE</div>
+      <span class="tag">Central</span>
+      <div class="links">
+        <a href="#">Omaha Sample 1</a><a href="#">Omaha Sample 2</a
+        ><a href="#">Omaha Sample 3</a>
+      </div>
+    </div>
+    <div class="branch-card" data-region="central">
+      <h3>Des Moines</h3>
+      <div class="city">Iowa · IA</div>
+      <span class="tag">Central</span>
+      <div class="links">
+        <a href="#">Des Moines Sample 1</a><a href="#">Des Moines Sample 2</a
+        ><a href="#">Des Moines Sample 3</a>
+      </div>
+    </div>
+    <div class="branch-card" data-region="central">
+      <h3>St. Louis</h3>
+      <div class="city">Missouri · MO</div>
+      <span class="tag">Central</span>
+      <div class="links">
+        <a href="#">St. Louis Sample 1</a><a href="#">St. Louis Sample 2</a
+        ><a href="#">St. Louis Sample 3</a>
+      </div>
+    </div>
+    <div class="branch-card" data-region="central">
+      <h3>Minneapolis</h3>
+      <div class="city">Minnesota · MN</div>
+      <span class="tag">Central</span>
+      <div class="links">
+        <a href="#">Minneapolis Sample 1</a><a href="#">Minneapolis Sample 2</a
+        ><a href="#">Minneapolis Sample 3</a>
+      </div>
+    </div>
+    <div class="branch-card" data-region="central">
+      <h3>Fargo</h3>
+      <div class="city">North Dakota · ND</div>
+      <span class="tag">Central</span>
+      <div class="links">
+        <a href="#">Fargo Sample 1</a><a href="#">Fargo Sample 2</a
+        ><a href="#">Fargo Sample 3</a>
+      </div>
+    </div>
+    <div class="branch-card" data-region="central">
+      <h3>Sioux Falls</h3>
+      <div class="city">South Dakota · SD</div>
+      <span class="tag">Central</span>
+      <div class="links">
+        <a href="#">Sioux Falls Sample 1</a><a href="#">Sioux Falls Sample 2</a
+        ><a href="#">Sioux Falls Sample 3</a>
+      </div>
+    </div>
+    <div class="branch-card" data-region="central">
+      <h3>Little Rock</h3>
+      <div class="city">Arkansas · AR</div>
+      <span class="tag">Central</span>
+      <div class="links">
+        <a href="#">Little Rock Sample 1</a><a href="#">Little Rock Sample 2</a
+        ><a href="#">Little Rock Sample 3</a>
+      </div>
+    </div>
+    <div class="branch-card" data-region="central">
+      <h3>Baton Rouge</h3>
+      <div class="city">Louisiana · LA</div>
+      <span class="tag">Central</span>
+      <div class="links">
+        <a href="#">Baton Rouge Sample 1</a><a href="#">Baton Rouge Sample 2</a
+        ><a href="#">Baton Rouge Sample 3</a>
+      </div>
+    </div>
+    <div class="branch-card" data-region="central">
+      <h3>Jackson</h3>
+      <div class="city">Mississippi · MS</div>
+      <span class="tag">Central</span>
+      <div class="links">
+        <a href="#">Jackson Sample 1</a><a href="#">Jackson Sample 2</a
+        ><a href="#">Jackson Sample 3</a>
+      </div>
+    </div>
+
+    <!-- EAST -->
+    <div class="branch-card" data-region="east">
+      <h3>New York</h3>
+      <div class="city">New York · NY</div>
+      <span class="tag">East Coast</span>
+      <div class="links">
+        <a href="#">New York Sample 1</a><a href="#">New York Sample 2</a
+        ><a href="#">New York Sample 3</a>
+      </div>
+    </div>
+    <div class="branch-card" data-region="east">
+      <h3>Boston</h3>
+      <div class="city">Massachusetts · MA</div>
+      <span class="tag">East Coast</span>
+      <div class="links">
+        <a href="#">Boston Sample 1</a><a href="#">Boston Sample 2</a
+        ><a href="#">Boston Sample 3</a>
+      </div>
+    </div>
+    <div class="branch-card" data-region="east">
+      <h3>Philadelphia</h3>
+      <div class="city">Pennsylvania · PA</div>
+      <span class="tag">East Coast</span>
+      <div class="links">
+        <a href="#">Philadelphia Sample 1</a
+        ><a href="#">Philadelphia Sample 2</a
+        ><a href="#">Philadelphia Sample 3</a>
+      </div>
+    </div>
+    <div class="branch-card" data-region="east">
+      <h3>Washington DC</h3>
+      <div class="city">District of Columbia · DC</div>
+      <span class="tag">East Coast</span>
+      <div class="links">
+        <a href="#">Washington DC Sample 1</a
+        ><a href="#">Washington DC Sample 2</a
+        ><a href="#">Washington DC Sample 3</a>
+      </div>
+    </div>
+    <div class="branch-card" data-region="east">
+      <h3>Miami</h3>
+      <div class="city">Florida · FL</div>
+      <span class="tag">East Coast</span>
+      <div class="links">
+        <a href="#">Miami Sample 1</a><a href="#">Miami Sample 2</a
+        ><a href="#">Miami Sample 3</a>
+      </div>
+    </div>
+    <div class="branch-card" data-region="east">
+      <h3>Atlanta</h3>
+      <div class="city">Georgia · GA</div>
+      <span class="tag">East Coast</span>
+      <div class="links">
+        <a href="#">Atlanta Sample 1</a><a href="#">Atlanta Sample 2</a
+        ><a href="#">Atlanta Sample 3</a>
+      </div>
+    </div>
+    <div class="branch-card" data-region="east">
+      <h3>Charlotte</h3>
+      <div class="city">North Carolina · NC</div>
+      <span class="tag">East Coast</span>
+      <div class="links">
+        <a href="#">Charlotte Sample 1</a><a href="#">Charlotte Sample 2</a
+        ><a href="#">Charlotte Sample 3</a>
+      </div>
+    </div>
+    <div class="branch-card" data-region="east">
+      <h3>Richmond</h3>
+      <div class="city">Virginia · VA</div>
+      <span class="tag">East Coast</span>
+      <div class="links">
+        <a href="#">Richmond Sample 1</a><a href="#">Richmond Sample 2</a
+        ><a href="#">Richmond Sample 3</a>
+      </div>
+    </div>
+    <div class="branch-card" data-region="east">
+      <h3>Baltimore</h3>
+      <div class="city">Maryland · MD</div>
+      <span class="tag">East Coast</span>
+      <div class="links">
+        <a href="#">Baltimore Sample 1</a><a href="#">Baltimore Sample 2</a
+        ><a href="#">Baltimore Sample 3</a>
+      </div>
+    </div>
+    <div class="branch-card" data-region="east">
+      <h3>Newark</h3>
+      <div class="city">New Jersey · NJ</div>
+      <span class="tag">East Coast</span>
+      <div class="links">
+        <a href="#">Newark Sample 1</a><a href="#">Newark Sample 2</a
+        ><a href="#">Newark Sample 3</a>
+      </div>
+    </div>
+    <div class="branch-card" data-region="east">
+      <h3>Hartford</h3>
+      <div class="city">Connecticut · CT</div>
+      <span class="tag">East Coast</span>
+      <div class="links">
+        <a href="#">Hartford Sample 1</a><a href="#">Hartford Sample 2</a
+        ><a href="#">Hartford Sample 3</a>
+      </div>
+    </div>
+    <div class="branch-card" data-region="east">
+      <h3>Providence</h3>
+      <div class="city">Rhode Island · RI</div>
+      <span class="tag">East Coast</span>
+      <div class="links">
+        <a href="#">Providence Sample 1</a><a href="#">Providence Sample 2</a
+        ><a href="#">Providence Sample 3</a>
+      </div>
+    </div>
+    <div class="branch-card" data-region="east">
+      <h3>Burlington</h3>
+      <div class="city">Vermont · VT</div>
+      <span class="tag">East Coast</span>
+      <div class="links">
+        <a href="#">Burlington Sample 1</a><a href="#">Burlington Sample 2</a
+        ><a href="#">Burlington Sample 3</a>
+      </div>
+    </div>
+    <div class="branch-card" data-region="east">
+      <h3>Manchester</h3>
+      <div class="city">New Hampshire · NH</div>
+      <span class="tag">East Coast</span>
+      <div class="links">
+        <a href="#">Manchester Sample 1</a><a href="#">Manchester Sample 2</a
+        ><a href="#">Manchester Sample 3</a>
+      </div>
+    </div>
+    <div class="branch-card" data-region="east">
+      <h3>Portland</h3>
+      <div class="city">Maine · ME</div>
+      <span class="tag">East Coast</span>
+      <div class="links">
+        <a href="#">Portland Sample 1</a><a href="#">Portland Sample 2</a
+        ><a href="#">Portland Sample 3</a>
+      </div>
+    </div>
+    <div class="branch-card" data-region="east">
+      <h3>Columbus</h3>
+      <div class="city">Ohio · OH</div>
+      <span class="tag">East Coast</span>
+      <div class="links">
+        <a href="#">Columbus Sample 1</a><a href="#">Columbus Sample 2</a
+        ><a href="#">Columbus Sample 3</a>
+      </div>
+    </div>
+    <div class="branch-card" data-region="east">
+      <h3>Detroit</h3>
+      <div class="city">Michigan · MI</div>
+      <span class="tag">East Coast</span>
+      <div class="links">
+        <a href="#">Detroit Sample 1</a><a href="#">Detroit Sample 2</a
+        ><a href="#">Detroit Sample 3</a>
+      </div>
+    </div>
+    <div class="branch-card" data-region="east">
+      <h3>Indianapolis</h3>
+      <div class="city">Indiana · IN</div>
+      <span class="tag">East Coast</span>
+      <div class="links">
+        <a href="#">Indianapolis Sample 1</a
+        ><a href="#">Indianapolis Sample 2</a
+        ><a href="#">Indianapolis Sample 3</a>
+      </div>
+    </div>
+    <div class="branch-card" data-region="east">
+      <h3>Louisville</h3>
+      <div class="city">Kentucky · KY</div>
+      <span class="tag">East Coast</span>
+      <div class="links">
+        <a href="#">Louisville Sample 1</a><a href="#">Louisville Sample 2</a
+        ><a href="#">Louisville Sample 3</a>
+      </div>
+    </div>
+    <div class="branch-card" data-region="east">
+      <h3>Nashville</h3>
+      <div class="city">Tennessee · TN</div>
+      <span class="tag">East Coast</span>
+      <div class="links">
+        <a href="#">Nashville Sample 1</a><a href="#">Nashville Sample 2</a
+        ><a href="#">Nashville Sample 3</a>
+      </div>
+    </div>
+    <div class="branch-card" data-region="east">
+      <h3>Birmingham</h3>
+      <div class="city">Alabama · AL</div>
+      <span class="tag">East Coast</span>
+      <div class="links">
+        <a href="#">Birmingham Sample 1</a><a href="#">Birmingham Sample 2</a
+        ><a href="#">Birmingham Sample 3</a>
+      </div>
+    </div>
+    <div class="branch-card" data-region="east">
+      <h3>Charleston</h3>
+      <div class="city">South Carolina · SC</div>
+      <span class="tag">East Coast</span>
+      <div class="links">
+        <a href="#">Charleston Sample 1</a><a href="#">Charleston Sample 2</a
+        ><a href="#">Charleston Sample 3</a>
+      </div>
+    </div>
+    <div class="branch-card" data-region="east">
+      <h3>Wilmington</h3>
+      <div class="city">Delaware · DE</div>
+      <span class="tag">East Coast</span>
+      <div class="links">
+        <a href="#">Wilmington Sample 1</a><a href="#">Wilmington Sample 2</a
+        ><a href="#">Wilmington Sample 3</a>
+      </div>
+    </div>
+    <div class="branch-card" data-region="east">
+      <h3>Charleston</h3>
+      <div class="city">West Virginia · WV</div>
+      <span class="tag">East Coast</span>
+      <div class="links">
+        <a href="#">Charleston Sample 1</a><a href="#">Charleston Sample 2</a
+        ><a href="#">Charleston Sample 3</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function filterCards(btn, region) {
+    document
+      .querySelectorAll(".filter-btn")
+      .forEach((b) => b.classList.remove("active"));
+    btn.classList.add("active");
+    document.querySelectorAll(".branch-card").forEach((c) => {
+      c.style.display =
+        region === "all" || c.dataset.region === region ? "" : "none";
+    });
+  }
+</script>
