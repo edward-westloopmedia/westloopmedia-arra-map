@@ -557,7 +557,7 @@
                                 .state_province_selector {
                                   position: sticky;
                                   top: 0;
-                                  z-index: 100;
+                                  z-index: 10;
                                   margin-bottom: 20px;
                                 }
 
@@ -585,7 +585,7 @@
                                 .state_province_selector.chips {
                                   display: flex;
                                   align-items: center;
-                                  justify-content: center;
+                                  justify-content: flex-start;
                                 }
 
                                 /* ===== DROPDOWN ===== */
@@ -609,7 +609,7 @@
                                 }
 
                                 .vertical.open .dropdown-container {
-                                  display: block;
+                                  display: flex;
                                   position: absolute;
                                   top: 100%;
                                   width: 90%;
@@ -618,12 +618,21 @@
                                   z-index: 999;
                                   max-width: 700px;
                                   border-radius: 15px;
+                                  flex-wrap: wrap;
+                                  align-items: center;
+                                  justify-content: center;
+                                  gap: 5px;
+                                  padding-top: 5px;
+                                  padding-bottom: 5px;
 
                                   li {
-                                    padding: 10px;
+                                    width: calc((100% - 40px) / 5) !important;
+                                    padding: 10px !important;
                                     cursor: pointer;
                                     border-radius: 15px;
                                     transition: all ease-in 0.1s;
+                                    text-align: center !important;
+                                    margin: 0px !important;
 
                                     &:hover {
                                       background: rgb(198, 189, 189);
@@ -634,17 +643,24 @@
                                 @media (max-width: 767px) {
                                   .vertical.open .dropdown-container {
                                     display: flex;
-                                    gap: 20px;
+                                    gap: 5px;
                                     overflow-x: auto;
                                     justify-content: center;
                                     align-items: center;
+                                    overflow-x: auto;
+                                    max-height: 40dvh;
 
                                     li {
-                                      padding: 8px 14px !important;
+                                      width: calc((100% - 40px) / 3) !important;
+                                      padding: 10px !important;
                                       border: 1px solid #333;
                                       border-radius: 20px;
-                                      cursor: pointer;
-                                      min-width: 40px;
+                                      font-size: x-large;
+                                      min-width: 100px;
+                                      min-height: 70px;
+                                      display: flex;
+                                      align-items: center;
+                                      justify-content: center;
                                     }
                                   }
                                 }
@@ -1091,13 +1107,46 @@
                               </div>
 
                               <script>
+                                // sample states
                                 const americaStates = [
+                                  "AL",
+                                  "AK",
+                                  "AZ",
+                                  "AR",
                                   "CA",
-                                  "TX",
+                                  "CO",
+                                  "CT",
+                                  "DE",
                                   "FL",
+                                  "GA",
+                                  "HI",
+
+                                  "ME",
+                                  "MD",
+                                  "MA",
+                                  "MI",
+                                  "MN",
+                                  "MS",
+
+                                  "NJ",
+                                  "NM",
                                   "NY",
-                                  "IL",
+                                  "NC",
+                                  "ND",
+                                  "OH",
+                                  "OK",
+
+                                  "TX",
+                                  "UT",
+                                  "VT",
+                                  "VA",
+                                  "WA",
+                                  "WV",
+                                  "WI",
+                                  "WY",
                                 ];
+
+                                //sample provinces
                                 const canadaProvinces = [
                                   "ON",
                                   "QC",
