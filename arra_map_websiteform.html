@@ -527,25 +527,30 @@
                                 /* ===== BUTTON ===== */
                                 .country_btns_wrapper {
                                   padding: 15px;
-                                  background: #f5f5f5;
 
                                   .country_btn {
                                     padding: 10px 16px;
                                     margin-right: 10px;
                                     cursor: pointer;
-                                    border: 1px solid #333;
                                     background: white;
+                                    font-weight: 700;
+                                    color: #908f8f;
+                                    font-family: "Rajdhani", sans-serif;
+                                    border: 2px solid #31455700;
+                                    font-size: 30px;
+                                    border-radius: 5px;
+                                    transition: all ease 0.5s;
 
                                     &.active {
-                                      background: #333;
-                                      color: white;
+                                      color: #314557;
+                                      border: 2px solid #314557;
+                                      border-radius: 5px;
+                                    }
+                                    &:hover {
+                                      color: #314557;
+                                      background: none;
                                     }
                                   }
-                                }
-
-                                /* ===== WRAPPER ===== */
-                                .country_map_wrapper {
-                                  padding: 20px;
                                 }
 
                                 /* ===== LIST ===== */
@@ -557,11 +562,30 @@
                                 }
 
                                 #stateList {
+                                  margin: 0 !important;
+                                  padding: 0 !important;
+
                                   * {
                                     &::before {
                                       display: none;
                                     }
                                   }
+                                }
+
+                                .state_province_selector.vertical {
+                                  display: flex;
+                                  align-items: center;
+                                  justify-content: center;
+
+                                  .dropdown-header {
+                                    width: 90%;
+                                  }
+                                }
+
+                                .state_province_selector.chips {
+                                  display: flex;
+                                  align-items: center;
+                                  justify-content: center;
                                 }
 
                                 /* ===== DROPDOWN ===== */
@@ -570,10 +594,14 @@
                                 }
 
                                 .dropdown-header {
+                                  width: 90%;
                                   padding: 12px;
-                                  border: 1px solid #333;
+                                  border: 2px solid #333;
                                   background: #f0f0f0;
                                   cursor: pointer;
+                                  margin: 0px !important;
+                                  border-radius: 15px;
+                                  max-width: 700px;
                                 }
 
                                 .dropdown-container {
@@ -584,21 +612,41 @@
                                   display: block;
                                   position: absolute;
                                   top: 100%;
-                                  width: 100%;
+                                  width: 90%;
                                   background: white;
-                                  border: 1px solid #ccc;
+                                  border: 2px solid #ccc;
                                   z-index: 999;
+                                  max-width: 700px;
+                                  border-radius: 15px;
+
+                                  li {
+                                    padding: 10px;
+                                    cursor: pointer;
+                                    border-radius: 15px;
+                                    transition: all ease-in 0.1s;
+
+                                    &:hover {
+                                      background: rgb(198, 189, 189);
+                                    }
+                                  }
                                 }
 
                                 @media (max-width: 767px) {
                                   .vertical.open .dropdown-container {
                                     display: flex;
-                                  }
-                                }
+                                    gap: 20px;
+                                    overflow-x: auto;
+                                    justify-content: center;
+                                    align-items: center;
 
-                                .dropdown-container li {
-                                  padding: 10px;
-                                  cursor: pointer;
+                                    li {
+                                      padding: 8px 14px !important;
+                                      border: 1px solid #333;
+                                      border-radius: 20px;
+                                      cursor: pointer;
+                                      min-width: 40px;
+                                    }
+                                  }
                                 }
 
                                 /* ===== CHIPS ===== */
@@ -607,13 +655,14 @@
                                   gap: 10px;
                                   overflow-x: auto;
                                   padding: 10px;
-                                  border-bottom: 1px solid #ccc;
 
                                   li {
-                                    padding: 8px 14px;
+                                    padding: 8px 14px !important;
                                     border: 1px solid #333;
                                     border-radius: 20px;
                                     cursor: pointer;
+                                    min-width: 70px !important;
+                                    text-align: center !important;
 
                                     &.active {
                                       background: #333;
@@ -627,53 +676,65 @@
                                   display: none;
                                   border: 1px solid #ccc;
                                   padding: 20px;
-                                  min-height: 300px;
+                                  margin-top: 10px;
+
                                   &.active {
                                     display: block;
                                   }
-                                }
 
-                                /* ===== FAKE MAP STATES ===== */
+                                  .svg_wrapper {
+                                    max-width: 1000px;
 
-                                .state {
-                                  path.active {
-                                    fill: red;
-                                    color: white;
+                                    .state {
+                                      svg {
+                                        width: 100%;
+                                        height: auto;
+                                      }
+                                      path.location {
+                                        fill: yellow;
+                                        transition: all ease 0.2s;
+                                        &:hover {
+                                          fill: rgb(35, 140, 40);
+                                        }
+                                      }
+                                      path.active {
+                                        fill: red;
+                                        color: white;
+                                      }
+                                    }
                                   }
                                 }
 
+                                #Canada_Map {
+                                  svg {
+                                    max-width: 800px;
+                                  }
+                                }
+
+                                /* NEVER TOUCH THIS CODE ⬇️*/
                                 svg path {
                                   fill: #ddd;
                                   stroke: #333;
                                   stroke-width: 1.5;
                                   vector-effect: non-scaling-stroke;
                                 }
-
-                                svg {
-                                  width: 100%;
-                                  height: auto;
-                                }
-
-                                .svg_wrapper {
-                                  max-width: 1000px;
-                                }
+                                /* NEVER TOUCH THIS CODE ⬆️*/
                               </style>
+                              <button id="toggleView">Switch View</button>
                               <div id="map_control_wrapper">
                                 <div class="country_btns_wrapper">
                                   <button
                                     class="country_btn active"
                                     id="America_Btn"
                                   >
-                                    America
+                                    USA
                                   </button>
                                   <button class="country_btn" id="Canada_Btn">
-                                    Canada
+                                    CANADA
                                   </button>
                                 </div>
 
                                 <div class="country_map_wrapper">
-                                  <button id="toggleView">Switch View</button>
-
                                   <ul
                                     id="stateList"
                                     class="state_province_selector vertical"
@@ -1093,8 +1154,7 @@
 
                                     const header = document.createElement("li");
                                     header.classList.add("dropdown-header");
-                                    header.textContent =
-                                      selectedValue || "Select State ▼";
+                                    header.textContent = "Select State ▼";
 
                                     header.addEventListener("click", () => {
                                       isOpen = !isOpen;
@@ -1123,6 +1183,8 @@
                                         highlightState(item);
 
                                         renderList(data);
+
+                                        stateList.classList.toggle("open");
                                       });
 
                                       container.appendChild(li);
@@ -1224,8 +1286,29 @@
                                   }
                                 });
 
+                                function stateColor() {
+                                  americaStates.forEach((el) => {
+                                    const state_name = el;
+                                    const target_div = document.getElementById(
+                                      `America-${state_name}`
+                                    );
+
+                                    target_div.classList.add("location");
+                                  });
+                                  canadaProvinces.forEach((el) => {
+                                    const state_name = el;
+
+                                    const target_div = document.getElementById(
+                                      `Canada-${state_name}`
+                                    );
+
+                                    target_div.classList.add("location");
+                                  });
+                                }
+
                                 /* INIT */
                                 activateAmerica();
+                                stateColor();
                               </script>
 
                               <!-- * * * * * * * *  ADD CONTENT HERE * * * * * * * * -->
