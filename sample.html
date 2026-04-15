@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Map Control + Highlight</title>
+
+    <style>
+      body {
+        font-family: Arial;
+        margin: 0;
+      }
+
+      /* ===== BUTTON ===== */
+      .country_btns_wrapper {
+        padding: 15px;
+        background: #f5f5f5;
+      }
+
+      .country_btn {
+        padding: 10px 16px;
+        margin-right: 10px;
+        cursor: pointer;
+        border: 1px solid #333;
+        background: white;
+      }
+
+      .country_btn.active {
+        background: #333;
+        color: white;
+      }
+
+      /* ===== WRAPPER ===== */
+      .country_map_wrapper {
+        padding: 20px;
+      }
+
+      /* ===== LIST ===== */
+      .state_province_selector {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        margin-bottom: 20px;
+      }
+
+      /* ===== DROPDOWN ===== */
+      .vertical {
+        position: relative;
+      }
+
+      .dropdown-header {
+        padding: 12px;
+        border: 1px solid #333;
+        background: #f0f0f0;
+        cursor: pointer;
+      }
+
+      .dropdown-container {
+        display: none;
+      }
+
+      .vertical.open .dropdown-container {
+        display: block;
+        position: absolute;
+        top: 100%;
+        width: 100%;
+        background: white;
+        border: 1px solid #ccc;
+        z-index: 999;
+      }
+
+      .dropdown-container li {
+        padding: 10px;
+        cursor: pointer;
+      }
+
+      /* ===== CHIPS ===== */
+      .chips {
+        display: flex;
+        gap: 10px;
+        overflow-x: auto;
+        padding: 10px;
+        border-bottom: 1px solid #ccc;
+      }
+
+      .chips li {
+        padding: 8px 14px;
+        border: 1px solid #333;
+        border-radius: 20px;
+        cursor: pointer;
+      }
+
+      .chips li.active {
+        background: #333;
+        color: white;
+      }
+
+      /* ===== MAP ===== */
+      .country_maps {
+        display: none;
+        border: 1px solid #ccc;
+        padding: 20px;
+        min-height: 300px;
+      }
+
+      .country_maps.active {
+        display: block;
+      }
+
+      /* ===== FAKE MAP STATES ===== */
+      .map_grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .state {
+        width: 60px;
+        height: 40px;
+        border: 1px solid #333;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+      }
+
+      .state.active {
+        fill: red;
+        color: white;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="map_control_wrapper">
+      <div class="country_btns_wrapper">
+        <button class="country_btn active" id="America_Btn">America</button>
+        <button class="country_btn" id="Canada_Btn">Canada</button>
+      </div>
+
+      <div class="country_map_wrapper">
+        <button id="toggleView">Switch View</button>
+
+        <ul id="stateList" class="state_province_selector vertical"></ul>
+
+        <!-- USA MAP -->
+        <div class="country_maps active" id="America_Map"></div>
+
+        <!-- CANADA MAP -->
+        <div class="country_maps" id="Canada_Map"></div>
+      </div>
+    </div>
+
+    <script>
+      const americaStates = ["CA", "TX", "FL", "NY", "IL"];
+      const canadaProvinces = ["ON", "QC", "BC", "AB", "MB"];
+
+      const americaBtn = document.getElementById("America_Btn");
+      const canadaBtn = document.getElementById("Canada_Btn");
+
+      const americaMap = document.getElementById("America_Map");
+      const canadaMap = document.getElementById("Canada_Map");
+
+      const stateList = document.getElementById("stateList");
+      const toggleViewBtn = document.getElementById("toggleView");
+
+      let currentMode = "vertical";
+      let currentData = americaStates;
+      let selectedValue = null;
+      let isOpen = false;
+
+      /* ===== HIGHLIGHT ===== */
+      function highlightState(code) {
+        document.querySelectorAll(".state").forEach((el) => {
+          el.classList.remove("active");
+        });
+
+        const target = document.getElementById(code);
+        if (target) {
+          target.classList.add("active");
+        }
+      }
+
+      /* ===== RENDER ===== */
+      function renderList(data) {
+        stateList.innerHTML = "";
+
+        if (currentMode === "vertical") {
+          stateList.classList.add("vertical");
+          stateList.classList.remove("chips");
+
+          const header = document.createElement("li");
+          header.classList.add("dropdown-header");
+          header.textContent = selectedValue || "Select State ▼";
+
+          header.addEventListener("click", () => {
+            isOpen = !isOpen;
+            stateList.classList.toggle("open", isOpen);
+          });
+
+          const container = document.createElement("div");
+          container.classList.add("dropdown-container");
+
+          data.forEach((item) => {
+            const li = document.createElement("li");
+            li.textContent = item;
+
+            li.addEventListener("click", (e) => {
+              e.stopPropagation();
+
+              selectedValue = item;
+              isOpen = false;
+
+              highlightState(item);
+
+              renderList(data);
+            });
+
+            container.appendChild(li);
+          });
+
+          stateList.appendChild(header);
+          stateList.appendChild(container);
+        } else {
+          stateList.classList.add("chips");
+          stateList.classList.remove("vertical");
+
+          data.forEach((item) => {
+            const li = document.createElement("li");
+            li.textContent = item;
+
+            if (item === selectedValue) {
+              li.classList.add("active");
+            }
+
+            li.addEventListener("click", () => {
+              selectedValue = item;
+
+              highlightState(item);
+
+              renderList(data);
+            });
+
+            stateList.appendChild(li);
+          });
+        }
+      }
+
+      /* ===== MAP CLICK → LIST SYNC ===== */
+      document.querySelectorAll(".state").forEach((el) => {
+        el.addEventListener("click", () => {
+          selectedValue = el.id;
+          highlightState(el.id);
+          renderList(currentData);
+        });
+      });
+
+      /* ===== TOGGLE ===== */
+      toggleViewBtn.addEventListener("click", () => {
+        currentMode = currentMode === "vertical" ? "chips" : "vertical";
+        isOpen = false;
+        renderList(currentData);
+      });
+
+      /* ===== COUNTRY SWITCH ===== */
+      function activateAmerica() {
+        currentData = americaStates;
+        selectedValue = null;
+
+        americaBtn.classList.add("active");
+        canadaBtn.classList.remove("active");
+
+        americaMap.classList.add("active");
+        canadaMap.classList.remove("active");
+
+        highlightState(null);
+        renderList(currentData);
+      }
+
+      function activateCanada() {
+        currentData = canadaProvinces;
+        selectedValue = null;
+
+        canadaBtn.classList.add("active");
+        americaBtn.classList.remove("active");
+
+        canadaMap.classList.add("active");
+        americaMap.classList.remove("active");
+
+        highlightState(null);
+        renderList(currentData);
+      }
+
+      americaBtn.addEventListener("click", activateAmerica);
+      canadaBtn.addEventListener("click", activateCanada);
+
+      /* ===== OUTSIDE CLICK ===== */
+      document.addEventListener("click", (e) => {
+        if (!stateList.contains(e.target)) {
+          isOpen = false;
+          stateList.classList.remove("open");
+        }
+      });
+
+      /* INIT */
+      activateAmerica();
+    </script>
+  </body>
+</html>
