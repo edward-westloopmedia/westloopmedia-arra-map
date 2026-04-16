@@ -706,15 +706,18 @@
                                         width: 100%;
                                         height: auto;
                                       }
+                                      path {
+                                        fill: #8fba98;
+                                      }
                                       path.location {
-                                        fill: yellow;
+                                        fill: #3c9650;
                                         transition: all ease 0.2s;
                                         &:hover {
-                                          fill: rgb(35, 140, 40);
+                                          fill: rgb(37, 90, 39);
                                         }
                                       }
                                       path.active {
-                                        fill: red;
+                                        fill: rgb(37, 90, 39);
                                         color: white;
                                       }
                                     }
@@ -724,6 +727,23 @@
                                 #Canada_Map {
                                   svg {
                                     max-width: 800px;
+                                  }
+                                }
+
+                                /* temporal css */
+
+                                #popup_title {
+                                  font-size: 30px !important;
+                                }
+                                .aContainer {
+                                  display: flex;
+                                  flex-direction: column;
+
+                                  a {
+                                    font-size: 20px !important;
+                                    &:hover {
+                                      color: #3c9650 !important;
+                                    }
                                   }
                                 }
 
@@ -814,15 +834,45 @@
                                         ✕
                                       </button>
                                     </div>
-                                    <p
-                                      style="
-                                        font-size: 14px;
-                                        color: #666;
-                                        margin: 0;
-                                      "
-                                    >
-                                      pop up sample
-                                    </p>
+
+                                    <div class="aContainer">
+                                      <a
+                                        style="
+                                          font-size: 14px;
+                                          color: #666;
+                                          margin: 0;
+                                        "
+                                      >
+                                        Download PDF Here 1
+                                      </a>
+                                      <a
+                                        style="
+                                          font-size: 14px;
+                                          color: #666;
+                                          margin: 0;
+                                        "
+                                      >
+                                        Download PDF Here 2
+                                      </a>
+                                      <a
+                                        style="
+                                          font-size: 14px;
+                                          color: #666;
+                                          margin: 0;
+                                        "
+                                      >
+                                        Download PDF Here 3
+                                      </a>
+                                      <a
+                                        style="
+                                          font-size: 14px;
+                                          color: #666;
+                                          margin: 0;
+                                        "
+                                      >
+                                        Download PDF Here 4
+                                      </a>
+                                    </div>
                                   </div>
 
                                   <!-- USA MAP -->
@@ -1223,6 +1273,75 @@
                                   "MB",
                                 ];
 
+                                const stateNames = {
+                                  AL: "Alabama",
+                                  AK: "Alaska",
+                                  AZ: "Arizona",
+                                  AR: "Arkansas",
+                                  CA: "California",
+                                  CO: "Colorado",
+                                  CT: "Connecticut",
+                                  DE: "Delaware",
+                                  FL: "Florida",
+                                  GA: "Georgia",
+                                  HI: "Hawaii",
+                                  ID: "Idaho",
+                                  IL: "Illinois",
+                                  IN: "Indiana",
+                                  IA: "Iowa",
+                                  KS: "Kansas",
+                                  KY: "Kentucky",
+                                  LA: "Louisiana",
+                                  ME: "Maine",
+                                  MD: "Maryland",
+                                  MA: "Massachusetts",
+                                  MI: "Michigan",
+                                  MN: "Minnesota",
+                                  MS: "Mississippi",
+                                  MO: "Missouri",
+                                  MT: "Montana",
+                                  NE: "Nebraska",
+                                  NV: "Nevada",
+                                  NH: "New Hampshire",
+                                  NJ: "New Jersey",
+                                  NM: "New Mexico",
+                                  NY: "New York",
+                                  NC: "North Carolina",
+                                  ND: "North Dakota",
+                                  OH: "Ohio",
+                                  OK: "Oklahoma",
+                                  OR: "Oregon",
+                                  PA: "Pennsylvania",
+                                  RI: "Rhode Island",
+                                  SC: "South Carolina",
+                                  SD: "South Dakota",
+                                  TN: "Tennessee",
+                                  TX: "Texas",
+                                  UT: "Utah",
+                                  VT: "Vermont",
+                                  VA: "Virginia",
+                                  WA: "Washington",
+                                  WV: "West Virginia",
+                                  WI: "Wisconsin",
+                                  WY: "Wyoming",
+                                };
+
+                                const provinceNames = {
+                                  AB: "Alberta",
+                                  BC: "British Columbia",
+                                  MB: "Manitoba",
+                                  NB: "New Brunswick",
+                                  NL: "Newfoundland and Labrador",
+                                  NS: "Nova Scotia",
+                                  NT: "Northwest Territories",
+                                  NU: "Nunavut",
+                                  ON: "Ontario",
+                                  PE: "Prince Edward Island",
+                                  QC: "Quebec",
+                                  SK: "Saskatchewan",
+                                  YT: "Yukon",
+                                };
+
                                 const americaBtn =
                                   document.getElementById("America_Btn");
                                 const canadaBtn =
@@ -1321,7 +1440,11 @@
                                         renderList(data);
 
                                         stateList.classList.toggle("open");
-                                        openPopup(item);
+                                        if (currentCountry === "America") {
+                                          openPopup(stateNames[item]);
+                                        } else {
+                                          openPopup(provinceNames[item]);
+                                        }
                                       });
 
                                       container.appendChild(li);
@@ -1345,7 +1468,12 @@
                                         selectedValue = item;
 
                                         highlightState(item);
-                                        openPopup(item);
+
+                                        if (currentCountry === "America") {
+                                          openPopup(stateNames[item]);
+                                        } else {
+                                          openPopup(provinceNames[item]);
+                                        }
 
                                         renderList(data);
                                       });
@@ -1455,7 +1583,19 @@
                                       const stateId = el.id;
                                       selectedValue = stateId;
 
+                                      console.log(stateId);
+
                                       openPopup(stateId);
+
+                                      const code = stateId
+                                        .replace("America-", "")
+                                        .replace("Canada-", "");
+
+                                      if (currentCountry === "America") {
+                                        openPopup(stateNames[code]);
+                                      } else {
+                                        openPopup(provinceNames[code]);
+                                      }
 
                                       highlightState_StateClick(stateId);
                                       renderList(currentData);
