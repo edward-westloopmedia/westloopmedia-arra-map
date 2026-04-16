@@ -736,6 +736,7 @@
                                 }
                                 /* NEVER TOUCH THIS CODE ⬆️*/
                               </style>
+
                               <button id="toggleView">Switch View</button>
                               <div id="map_control_wrapper">
                                 <div class="country_btns_wrapper">
@@ -754,8 +755,75 @@
                                   <ul
                                     id="stateList"
                                     class="state_province_selector vertical"
-                                    style="list-style-type: none"
                                   ></ul>
+
+                                  <div
+                                    id="overlay"
+                                    style="
+                                      display: none;
+                                      position: fixed;
+                                      inset: 0;
+                                      background: rgba(0, 0, 0, 0.4);
+                                      z-index: 100;
+                                    "
+                                  ></div>
+
+                                  <div
+                                    id="popup"
+                                    style="
+                                      display: none;
+                                      position: fixed;
+                                      top: 50%;
+                                      left: 50%;
+                                      transform: translate(-50%, -50%);
+                                      z-index: 101;
+                                      background: #fff;
+                                      border-radius: 12px;
+                                      padding: 24px;
+                                      width: 320px;
+                                      box-sizing: border-box;
+                                    "
+                                  >
+                                    <div
+                                      style="
+                                        display: flex;
+                                        justify-content: space-between;
+                                        align-items: center;
+                                        margin-bottom: 16px;
+                                      "
+                                    >
+                                      <span
+                                        style="
+                                          font-size: 16px;
+                                          font-weight: 500;
+                                        "
+                                        id="popup_title"
+                                      ></span>
+                                      <button
+                                        id="closeBtn"
+                                        style="
+                                          width: 28px;
+                                          height: 28px;
+                                          border: 1px solid #ddd;
+                                          border-radius: 6px;
+                                          background: none;
+                                          cursor: pointer;
+                                          font-size: 14px;
+                                        "
+                                      >
+                                        ✕
+                                      </button>
+                                    </div>
+                                    <p
+                                      style="
+                                        font-size: 14px;
+                                        color: #666;
+                                        margin: 0;
+                                      "
+                                    >
+                                      pop up sample
+                                    </p>
+                                  </div>
 
                                   <!-- USA MAP -->
                                   <div
@@ -1170,6 +1238,8 @@
                                 const toggleViewBtn =
                                   document.getElementById("toggleView");
 
+                                const popup = document.getElementById("popup");
+
                                 let currentCountry = "America";
                                 let currentMode = "vertical";
                                 let currentData = americaStates;
@@ -1185,6 +1255,23 @@
                                     });
 
                                   const targetId = `${currentCountry}-${code}`;
+                                  const target =
+                                    document.getElementById(targetId);
+
+                                  if (target) {
+                                    target.classList.add("active");
+                                  }
+                                }
+
+                                /* ===== HIGHLIGHT ===== */
+                                function highlightState_StateClick(code) {
+                                  document
+                                    .querySelectorAll(".state .active")
+                                    .forEach((el) => {
+                                      el.classList.remove("active");
+                                    });
+
+                                  const targetId = code;
                                   const target =
                                     document.getElementById(targetId);
 
@@ -1234,6 +1321,7 @@
                                         renderList(data);
 
                                         stateList.classList.toggle("open");
+                                        openPopup(item);
                                       });
 
                                       container.appendChild(li);
@@ -1257,6 +1345,7 @@
                                         selectedValue = item;
 
                                         highlightState(item);
+                                        openPopup(item);
 
                                         renderList(data);
                                       });
@@ -1265,17 +1354,6 @@
                                     });
                                   }
                                 }
-
-                                /* ===== MAP CLICK → LIST SYNC ===== */
-                                document
-                                  .querySelectorAll(".state")
-                                  .forEach((el) => {
-                                    el.addEventListener("click", () => {
-                                      selectedValue = el.id;
-                                      highlightState(el.id);
-                                      renderList(currentData);
-                                    });
-                                  });
 
                                 /* ===== TOGGLE ===== */
                                 toggleViewBtn.addEventListener("click", () => {
@@ -1289,6 +1367,8 @@
 
                                 /* ===== COUNTRY SWITCH ===== */
                                 function activateAmerica() {
+                                  popupDisplayNone();
+
                                   currentCountry = "America";
                                   currentData = americaStates;
                                   selectedValue = null;
@@ -1304,6 +1384,7 @@
                                 }
 
                                 function activateCanada() {
+                                  popupDisplayNone();
                                   currentCountry = "Canada";
                                   currentData = canadaProvinces;
                                   selectedValue = null;
@@ -1355,9 +1436,67 @@
                                   });
                                 }
 
+                                function popupDisplayNone() {
+                                  popup.style.display = "none";
+                                }
+                                function popupDisplayOn() {
+                                  popup.style.display = "block";
+                                }
+
                                 /* INIT */
                                 activateAmerica();
                                 stateColor();
+
+                                /* ===== MAP CLICK → LIST SYNC ===== */
+                                document
+                                  .querySelectorAll(".state path.location")
+                                  .forEach((el) => {
+                                    el.addEventListener("click", () => {
+                                      const stateId = el.id;
+                                      selectedValue = stateId;
+
+                                      openPopup(stateId);
+
+                                      highlightState_StateClick(stateId);
+                                      renderList(currentData);
+                                    });
+                                  });
+                              </script>
+
+                              <!-- popup sample code⬇️ -->
+
+                              <script>
+                                function openPopup(popup_title) {
+                                  document.getElementById(
+                                    "popup"
+                                  ).style.display = "block";
+
+                                  document.getElementById(
+                                    "popup_title"
+                                  ).innerText = popup_title;
+                                  document.getElementById(
+                                    "overlay"
+                                  ).style.display = "block";
+                                }
+
+                                function closePopup() {
+                                  document.getElementById(
+                                    "popup"
+                                  ).style.display = "none";
+                                  document.getElementById(
+                                    "popup_title"
+                                  ).innerText = "";
+                                  document.getElementById(
+                                    "overlay"
+                                  ).style.display = "none";
+                                }
+
+                                document
+                                  .getElementById("closeBtn")
+                                  .addEventListener("click", closePopup);
+                                document
+                                  .getElementById("overlay")
+                                  .addEventListener("click", closePopup);
                               </script>
 
                               <!-- * * * * * * * *  ADD CONTENT HERE * * * * * * * * -->
