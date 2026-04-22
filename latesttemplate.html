@@ -1312,31 +1312,27 @@
                                   ? "Select State ▼"
                                   : "Select Province ▼";
 
-                              header.addEventListener(
-                                "click",
-                                () => {
-                                  if (!isOpen) {
-                                    const activatedCountryHeader =
-                                      document.querySelector(
-                                        ".country_maps.active"
-                                      );
+                              header.addEventListener("click", () => {
+                                if (!isOpen) {
+                                  const activatedCountryHeader =
+                                    document.querySelector(
+                                      ".country_maps.active"
+                                    );
 
-                                    const targetOffset =
-                                      activatedCountryHeader.getBoundingClientRect()
-                                        .height;
+                                  const targetOffset =
+                                    activatedCountryHeader.getBoundingClientRect()
+                                      .height;
 
-                                    const dropdownContainer =
-                                      document.querySelector(
-                                        ".dropdown-container"
-                                      );
+                                  const dropdownContainer =
+                                    document.querySelector(
+                                      ".dropdown-container"
+                                    );
 
-                                    dropdownContainer.style.maxHeight = `${targetOffset}px`;
-                                  }
-                                  isOpen = !isOpen;
-                                  stateList.classList.toggle("open", isOpen);
-                                },
-                                { once: true }
-                              );
+                                  dropdownContainer.style.maxHeight = `${targetOffset}px`;
+                                }
+                                isOpen = !isOpen;
+                                stateList.classList.toggle("open", isOpen);
+                              });
 
                               const container = document.createElement("div");
                               container.classList.add("dropdown-container");
@@ -1345,27 +1341,23 @@
                                 const li = document.createElement("li");
                                 li.textContent = item;
 
-                                li.addEventListener(
-                                  "click",
-                                  (e) => {
-                                    e.stopPropagation();
+                                li.addEventListener("click", (e) => {
+                                  e.stopPropagation();
 
-                                    selectedValue = item;
-                                    isOpen = false;
+                                  selectedValue = item;
+                                  isOpen = false;
 
-                                    highlightState(item);
+                                  highlightState(item);
 
-                                    renderList(data);
+                                  renderList(data);
 
-                                    stateList.classList.toggle("open");
-                                    if (currentCountry === "America") {
-                                      openPopup(stateNames[item]);
-                                    } else {
-                                      openPopup(provinceNames[item]);
-                                    }
-                                  },
-                                  { once: true }
-                                );
+                                  stateList.classList.toggle("open");
+                                  if (currentCountry === "America") {
+                                    openPopup(stateNames[item]);
+                                  } else {
+                                    openPopup(provinceNames[item]);
+                                  }
+                                });
 
                                 container.appendChild(li);
                               });
@@ -1409,26 +1401,16 @@
                             renderList(currentData);
                           }
 
-                          americaBtn.addEventListener(
-                            "click",
-                            activateAmerica,
-                            { once: true }
-                          );
-                          canadaBtn.addEventListener("click", activateCanada, {
-                            once: true,
-                          });
+                          americaBtn.addEventListener("click", activateAmerica);
+                          canadaBtn.addEventListener("click", activateCanada);
 
                           /* ===== OUTSIDE CLICK ===== */
-                          document.addEventListener(
-                            "click",
-                            (e) => {
-                              if (!stateList.contains(e.target)) {
-                                isOpen = false;
-                                stateList.classList.remove("open");
-                              }
-                            },
-                            { once: true }
-                          );
+                          document.addEventListener("click", (e) => {
+                            if (!stateList.contains(e.target)) {
+                              isOpen = false;
+                              stateList.classList.remove("open");
+                            }
+                          });
 
                           function stateColor() {
                             americaStates.forEach((el) => {
@@ -1465,29 +1447,25 @@
                           document
                             .querySelectorAll(".state path.location")
                             .forEach((el) => {
-                              el.addEventListener(
-                                "click",
-                                () => {
-                                  const stateId = el.id;
-                                  selectedValue = stateId;
+                              el.addEventListener("click", () => {
+                                const stateId = el.id;
+                                selectedValue = stateId;
 
-                                  openPopup(stateId);
+                                openPopup(stateId);
 
-                                  const code = stateId
-                                    .replace("America-", "")
-                                    .replace("Canada-", "");
+                                const code = stateId
+                                  .replace("America-", "")
+                                  .replace("Canada-", "");
 
-                                  if (currentCountry === "America") {
-                                    openPopup(stateNames[code]);
-                                  } else {
-                                    openPopup(provinceNames[code]);
-                                  }
+                                if (currentCountry === "America") {
+                                  openPopup(stateNames[code]);
+                                } else {
+                                  openPopup(provinceNames[code]);
+                                }
 
-                                  highlightState_StateClick(stateId);
-                                  renderList(currentData);
-                                },
-                                { once: true }
-                              );
+                                highlightState_StateClick(stateId);
+                                renderList(currentData);
+                              });
                             });
                         </script>
 
@@ -1497,11 +1475,17 @@
                           function openPopup(popup_title) {
                             document.getElementById("popup").style.display =
                               "block";
-
                             document.getElementById("popup_title").innerText =
                               popup_title;
                             document.getElementById("overlay").style.display =
                               "block";
+
+                            // 열리자마자 클릭 못하게 막고 350ms 뒤에 해제
+                            const popup = document.getElementById("popup");
+                            popup.style.pointerEvents = "none";
+                            setTimeout(() => {
+                              popup.style.pointerEvents = "auto";
+                            }, 350);
                           }
 
                           function closePopup() {
@@ -1515,14 +1499,10 @@
 
                           document
                             .getElementById("closeBtn")
-                            .addEventListener("click", closePopup, {
-                              once: true,
-                            });
+                            .addEventListener("click", closePopup);
                           document
                             .getElementById("overlay")
-                            .addEventListener("click", closePopup, {
-                              once: true,
-                            });
+                            .addEventListener("click", closePopup);
                         </script>
 
                         <!-- * * * * * * * *  ADD CONTENT HERE * * * * * * * * -->
