@@ -503,215 +503,255 @@
                       <div class="container">
                         <!-- * * * * * * * *  ADD CONTENT HERE * * * * * * * * -->
                         <style>
-                          /* ===== BUTTON ===== */
-                          .country_btns_wrapper {
-                            padding: 15px;
+                          #map_control_wrapper {
+                            /*Center Alignment*/
+                            display: flex;
+                            flex-direction: column;
+                            justify-content: center;
+                            /*Center Alignment*/
 
-                            .country_btn {
-                              padding: 10px 16px;
-                              margin-right: 10px;
-                              cursor: pointer;
-                              background: white;
-                              font-weight: 700;
-                              color: #908f8f;
-                              font-family: "Rajdhani", sans-serif;
-                              border: 2px solid #31455700;
-                              font-size: 30px;
-                              border-radius: 5px;
-                              transition: all ease 0.5s;
-
-                              &.active {
-                                color: #314557;
-                                border: 2px solid #314557;
+                            /* btn settings */
+                            .country_btns_wrapper {
+                              margin: 0 auto;
+                              padding: 15px;
+                              .country_btn {
+                                padding: 10px 16px;
+                                margin-right: 10px;
+                                cursor: pointer;
+                                background: white;
+                                font-weight: 700;
+                                color: #908f8f;
+                                font-family: "Rajdhani", sans-serif;
+                                border: 2px solid #31455700;
+                                font-size: 30px;
                                 border-radius: 5px;
-                              }
-                              &:hover {
-                                color: #314557;
-                                background: none;
-                              }
-                            }
-                          }
+                                transition: all ease 0.5s;
 
-                          #stateList {
-                            * {
-                              &::before {
-                                display: none;
-                              }
-                            }
-                            font-size: 20px;
-                            margin-bottom: -50px !important;
-                            text-align: center;
-                            padding: 0px !important;
-                          }
-
-                          .state_province_selector.vertical {
-                            display: flex;
-                            align-items: center;
-                            justify-content: center;
-                            font-size: 30px;
-
-                            .dropdown-header {
-                              width: 90%;
-                            }
-                          }
-
-                          /* ===== DROPDOWN ===== */
-                          .vertical {
-                            position: relative;
-                          }
-
-                          .dropdown-header {
-                            width: 50%;
-                            padding-top: 5px;
-                            border: 1px solid #314557;
-                            /* background: #eeeeee80; */
-                            cursor: pointer;
-                            margin: 0px !important;
-                            border-radius: 5px;
-                            max-width: 300px;
-                            font-size: 25px;
-                            text-align: center !important;
-                            color: #314557;
-                          }
-
-                          .dropdown-container {
-                            display: none;
-                          }
-
-                          .vertical.open .dropdown-container {
-                            display: flex;
-                            position: absolute;
-                            top: 100%;
-                            width: 90%;
-                            background: #f7f7f7;
-                            /* border: 2px solid #ccc; */
-                            z-index: 999;
-                            max-width: 700px;
-                            /* border-radius: 15px; */
-                            flex-wrap: wrap;
-                            align-items: center;
-                            justify-content: center;
-                            gap: 5px;
-                            padding-top: 5px;
-                            padding-bottom: 5px;
-                            color: #314557;
-
-                            li {
-                              width: calc((100% - 40px) / 5) !important;
-                              padding: 10px !important;
-                              cursor: pointer;
-                              border-radius: 15px;
-                              transition: all ease-in 0.1s;
-                              text-align: center !important;
-                              margin: 0px !important;
-
-                              &:hover {
-                                background: rgb(198, 189, 189);
+                                &.active {
+                                  color: #314557;
+                                  border: 2px solid #314557;
+                                  border-radius: 5px;
+                                }
+                                &:hover {
+                                  color: #314557;
+                                  background: none;
+                                }
                               }
                             }
-                          }
 
-                          @media (max-width: 767px) {
-                            .vertical.open .dropdown-container {
-                              display: flex;
-                              gap: 5px;
-                              overflow-x: auto;
-                              justify-content: center;
-                              align-items: center;
-                              overflow-x: auto;
-                              max-height: 40dvh;
+                            /* state and province select */
+                            .state_province_selector {
+                              * {
+                                &::before {
+                                  display: none;
+                                }
+                              }
+                              font-size: 20px;
+                              margin-bottom: -50px !important;
+                              text-align: center;
+                              padding: 0px !important;
 
-                              li {
-                                width: calc((100% - 40px) / 3) !important;
-                                padding: 10px !important;
-                                border: 1px solid #333;
-                                border-radius: 20px;
-                                font-size: x-large;
-                                min-width: 100px;
-                                min-height: 70px;
+                              &.vertical {
                                 display: flex;
                                 align-items: center;
                                 justify-content: center;
-                              }
-                            }
-                          }
+                                position: relative;
 
-                          /* ===== MAP ===== */
-                          .country_maps {
-                            display: none;
-
-                            margin-top: 5px;
-
-                            &.active {
-                              display: block;
-                            }
-
-                            .svg_wrapper {
-                              max-width: 1000px;
-
-                              .state {
-                                svg {
-                                  width: 100%;
-                                  height: auto;
+                                .dropdown-header {
+                                  width: 90%;
+                                  padding-top: 5px;
+                                  border: 1px solid #314557;
+                                  cursor: pointer;
+                                  margin: 0px !important;
+                                  border-radius: 5px;
+                                  max-width: 300px;
+                                  font-size: 25px;
+                                  text-align: center !important;
+                                  color: #314557;
                                 }
-                                path {
-                                  fill: #8fba98;
+
+                                .dropdown-container {
+                                  display: none;
                                 }
-                                path.location {
-                                  fill: #3c9650;
-                                  transition: all ease 0.2s;
-                                  &:hover {
-                                    fill: rgb(37, 90, 39);
+
+                                /* when list is open */
+                                &.open {
+                                  .dropdown-container {
+                                    display: flex;
+                                    position: absolute;
+                                    top: 100%;
+                                    width: 90%;
+                                    background: #f7f7f7;
+                                    z-index: 999;
+                                    max-width: 700px;
+                                    flex-wrap: wrap;
+                                    align-items: center;
+                                    justify-content: center;
+                                    gap: 5px;
+                                    padding-top: 5px;
+                                    padding-bottom: 5px;
+                                    color: #314557;
+
+                                    li {
+                                      width: calc((100% - 40px) / 5) !important;
+                                      padding: 10px !important;
+                                      cursor: pointer;
+                                      border-radius: 15px;
+                                      transition: all ease-in 0.1s;
+                                      text-align: center !important;
+                                      margin: 0px !important;
+
+                                      &:hover {
+                                        background: rgb(220, 220, 220);
+                                      }
+                                    }
                                   }
                                 }
-                                path.active {
-                                  fill: rgb(37, 90, 39);
-                                  color: white;
+                              }
+                            }
+
+                            /* ===== MAP ===== */
+                            .country_maps {
+                              text-align: center;
+                              display: none;
+                              &.active {
+                                display: block;
+                              }
+
+                              .svg_wrapper {
+                                max-width: 1000px;
+                                .state {
+                                  svg {
+                                    width: 100%;
+                                    height: auto;
+                                  }
+                                  path {
+                                    fill: #82c48b;
+                                  }
+                                  path.location {
+                                    fill: #3c9650;
+                                    transition: ease filter 0.3s;
+                                    filter: brightness(1);
+                                    &:hover {
+                                      filter: brightness(1.2);
+                                    }
+                                  }
+                                  path.active {
+                                    /* fill: rgb(37, 90, 39); */
+                                    color: white;
+                                  }
                                 }
                               }
                             }
-                          }
 
-                          #Canada_Map {
-                            svg {
-                              max-width: 800px;
-                            }
-                          }
-
-                          /* temporal css */
-
-                          #popup_title {
-                            font-size: 30px !important;
-                          }
-                          .aContainer {
-                            display: flex;
-                            flex-direction: column;
-
-                            a {
-                              font-size: 20px !important;
-                              &:hover {
-                                color: #3c9650 !important;
+                            #Canada_Map {
+                              svg {
+                                max-width: 800px;
                               }
                             }
-                          }
 
-                          /*Center Alignment*/
+                            /* pop-up css */
 
-                          #map_control_wrapper {
-                            display: flex;
-                            flex-direction: column;
-                            justify-content: center;
-
-                            .country_btns_wrapper {
-                              margin: 0 auto;
+                            #overlay {
+                              display: none;
+                              position: fixed;
+                              inset: 0;
+                              background: rgba(0, 0, 0, 0.4);
+                              z-index: 100;
                             }
 
-                            .country_maps {
-                              text-align: center;
+                            #popup {
+                              display: none;
+                              position: fixed;
+                              top: 50%;
+                              left: 50%;
+                              transform: translate(-50%, -50%);
+                              z-index: 101;
+                              background: #fff;
+                              border-radius: 12px;
+                              padding: 24px;
+                              width: 320px;
+                              box-sizing: border-box;
+
+                              .popup_title_container {
+                                display: flex;
+                                justify-content: space-between;
+                                align-items: center;
+                                margin-bottom: 16px;
+
+                                #popup_title {
+                                  font-size: 30px !important;
+                                }
+
+                                #closeBtn {
+                                  width: 28px;
+                                  height: 28px;
+                                  border: 1px solid #ddd;
+                                  border-radius: 6px;
+                                  background: none;
+                                  cursor: pointer;
+                                  font-size: 14px;
+                                }
+                              }
+                            }
+
+                            .aContainer {
+                              display: flex;
+                              flex-direction: column;
+
+                              a {
+                                font-size: 30px;
+                                &:hover {
+                                  color: #3c9650;
+                                }
+                              }
                             }
 
                             margin-top: 50px;
                             margin-bottom: 70px;
+                          }
+
+                          /* Mobile View */
+                          @media (max-width: 767px) {
+                            #map_control_wrapper {
+                              /* small margin for mobile device */
+                              margin-top: 10px;
+                              margin-bottom: 20px;
+
+                              .state_province_selector {
+                                margin-bottom: 20px !important;
+
+                                &.vertical {
+                                  &.open {
+                                    .dropdown-container {
+                                      display: flex;
+                                      gap: 2px;
+                                      width: 100%;
+                                      justify-content: center;
+                                      align-items: center;
+                                      overflow-x: auto;
+
+                                      /* Calculated by JavaScript */
+                                      /* max-height: 33dvh; */
+
+                                      li {
+                                        width: calc(
+                                          (100% - 40px) / 4
+                                        ) !important;
+                                        padding: 5px !important;
+
+                                        font-size: 20px;
+                                        min-width: 100px;
+                                        min-height: 70px;
+                                        display: flex;
+                                        align-items: center;
+                                        justify-content: center;
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
                           }
 
                           /* NEVER TOUCH THIS CODE ⬇️*/
@@ -721,7 +761,6 @@
                             stroke-width: 1.5;
                             vector-effect: non-scaling-stroke;
                           }
-
                           /* NEVER TOUCH THIS CODE ⬆️*/
                         </style>
 
@@ -736,98 +775,19 @@
                           </div>
 
                           <div class="country_map_wrapper">
-                            <div
-                              id="overlay"
-                              style="
-                                display: none;
-                                position: fixed;
-                                inset: 0;
-                                background: rgba(0, 0, 0, 0.4);
-                                z-index: 100;
-                              "
-                            ></div>
+                            <div id="overlay"></div>
 
-                            <div
-                              id="popup"
-                              style="
-                                display: none;
-                                position: fixed;
-                                top: 50%;
-                                left: 50%;
-                                transform: translate(-50%, -50%);
-                                z-index: 101;
-                                background: #fff;
-                                border-radius: 12px;
-                                padding: 24px;
-                                width: 320px;
-                                box-sizing: border-box;
-                              "
-                            >
-                              <div
-                                style="
-                                  display: flex;
-                                  justify-content: space-between;
-                                  align-items: center;
-                                  margin-bottom: 16px;
-                                "
-                              >
-                                <span
-                                  style="font-size: 16px; font-weight: 500"
-                                  id="popup_title"
-                                ></span>
-                                <button
-                                  id="closeBtn"
-                                  style="
-                                    width: 28px;
-                                    height: 28px;
-                                    border: 1px solid #ddd;
-                                    border-radius: 6px;
-                                    background: none;
-                                    cursor: pointer;
-                                    font-size: 14px;
-                                  "
-                                >
-                                  ✕
-                                </button>
+                            <div id="popup">
+                              <div class="popup_title_container">
+                                <span id="popup_title"></span>
+                                <button id="closeBtn">✕</button>
                               </div>
 
                               <div class="aContainer">
-                                <a
-                                  style="
-                                    font-size: 14px;
-                                    color: #666;
-                                    margin: 0;
-                                  "
-                                >
-                                  Download PDF Here 1
-                                </a>
-                                <a
-                                  style="
-                                    font-size: 14px;
-                                    color: #666;
-                                    margin: 0;
-                                  "
-                                >
-                                  Download PDF Here 2
-                                </a>
-                                <a
-                                  style="
-                                    font-size: 14px;
-                                    color: #666;
-                                    margin: 0;
-                                  "
-                                >
-                                  Download PDF Here 3
-                                </a>
-                                <a
-                                  style="
-                                    font-size: 14px;
-                                    color: #666;
-                                    margin: 0;
-                                  "
-                                >
-                                  Download PDF Here 4
-                                </a>
+                                <a> Download PDF Here 1 </a>
+                                <a> Download PDF Here 2 </a>
+                                <a> Download PDF Here 3 </a>
+                                <a> Download PDF Here 4 </a>
                               </div>
                             </div>
 
@@ -1338,29 +1298,12 @@
                             }
                           }
 
-                          /* ===== HIGHLIGHT ===== */
-                          function highlightState_StateClick(code) {
-                            document
-                              .querySelectorAll(".state .active")
-                              .forEach((el) => {
-                                el.classList.remove("active");
-                              });
-
-                            const targetId = code;
-                            const target = document.getElementById(targetId);
-
-                            if (target) {
-                              target.classList.add("active");
-                            }
-                          }
-
                           /* ===== RENDER ===== */
                           function renderList(data) {
                             stateList.innerHTML = "";
 
                             if (currentMode === "vertical") {
                               stateList.classList.add("vertical");
-                              stateList.classList.remove("chips");
 
                               const header = document.createElement("li");
                               header.classList.add("dropdown-header");
@@ -1370,6 +1313,27 @@
                                   : "Select Province ▼";
 
                               header.addEventListener("click", () => {
+                                if (!isOpen) {
+                                  const activatedCountryHeader =
+                                    document.querySelectorAll(
+                                      ".country_maps.active"
+                                    )[0];
+
+                                  const targetOffset =
+                                    activatedCountryHeader.getBoundingClientRect()
+                                      .height;
+
+                                  console.log(targetOffset);
+
+                                  const dropdownContainer =
+                                    document.querySelectorAll(
+                                      ".dropdown-container"
+                                    )[0];
+
+                                  dropdownContainer.style.maxHeight = `${targetOffset}px`;
+
+                                  // console.log(dropdownContainer.offsetHeight);
+                                }
                                 isOpen = !isOpen;
                                 stateList.classList.toggle("open", isOpen);
                               });
