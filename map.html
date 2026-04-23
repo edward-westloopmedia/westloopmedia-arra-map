@@ -1144,13 +1144,44 @@
                             provinceNames;
 
                           async function jsonFetch() {
-                            const res = await fetch("./map.json");
-                            const data = await res.json();
+                            //https://staging-arra.site-ym.com/resource/resmgr/map/map.csv
+                            const res = await fetch("./map.csv");
+                            const text = await res.text();
 
-                            americaStates = data.americaStates;
-                            canadaProvinces = data.canadaProvinces;
-                            stateNames = data.stateNames;
-                            provinceNames = data.provinceNames;
+                            const rows = text.trim().split("\n").slice(1); // 헤더 제거
+                            const data = rows.map((row) => {
+                              const [
+                                code,
+                                name,
+                                inAmericaStates,
+                                inCanadaProvinces,
+                                type,
+                              ] = row.split(",");
+                              return {
+                                code,
+                                name,
+                                inAmericaStates: inAmericaStates === "true",
+                                inCanadaProvinces: inCanadaProvinces === "true",
+                                type,
+                              };
+                            });
+
+                            americaStates = data
+                              .filter((r) => r.inAmericaStates)
+                              .map((r) => r.code);
+                            canadaProvinces = data
+                              .filter((r) => r.inCanadaProvinces)
+                              .map((r) => r.code);
+                            stateNames = Object.fromEntries(
+                              data
+                                .filter((r) => r.type === "state")
+                                .map((r) => [r.code, r.name])
+                            );
+                            provinceNames = Object.fromEntries(
+                              data
+                                .filter((r) => r.type === "province")
+                                .map((r) => [r.code, r.name])
+                            );
 
                             const americaBtn =
                               document.getElementById("America_Btn");

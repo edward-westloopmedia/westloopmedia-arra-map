@@ -1,0 +1,64 @@
+code,name,inAmericaStates,inCanadaProvinces,type
+AL,Alabama,true,false,state
+AK,Alaska,true,false,state
+AZ,Arizona,true,false,state
+AR,Arkansas,true,false,state
+CA,California,true,false,state
+CO,Colorado,true,false,state
+CT,Connecticut,true,false,state
+DE,Delaware,true,false,state
+FL,Florida,true,false,state
+GA,Georgia,true,false,state
+HI,Hawaii,true,false,state
+ID,Idaho,false,false,state
+IL,Illinois,false,false,state
+IN,Indiana,false,false,state
+IA,Iowa,false,false,state
+KS,Kansas,false,false,state
+KY,Kentucky,false,false,state
+LA,Louisiana,false,false,state
+ME,Maine,true,false,state
+MD,Maryland,true,false,state
+MA,Massachusetts,true,false,state
+MI,Michigan,true,false,state
+MN,Minnesota,true,false,state
+MS,Mississippi,true,false,state
+MO,Missouri,false,false,state
+MT,Montana,false,false,state
+NE,Nebraska,false,false,state
+NV,Nevada,false,false,state
+NH,New Hampshire,false,false,state
+NJ,New Jersey,true,false,state
+NM,New Mexico,true,false,state
+NY,New York,true,false,state
+NC,North Carolina,true,false,state
+ND,North Dakota,true,false,state
+OH,Ohio,true,false,state
+OK,Oklahoma,true,false,state
+OR,Oregon,false,false,state
+PA,Pennsylvania,false,false,state
+RI,Rhode Island,false,false,state
+SC,South Carolina,false,false,state
+SD,South Dakota,false,false,state
+TN,Tennessee,false,false,state
+TX,Texas,true,false,state
+UT,Utah,true,false,state
+VT,Vermont,true,false,state
+VA,Virginia,true,false,state
+WA,Washington,true,false,state
+WV,West Virginia,true,false,state
+WI,Wisconsin,true,false,state
+WY,Wyoming,true,false,state
+AB,Alberta,false,true,province
+BC,British Columbia,false,true,province
+MB,Manitoba,false,true,province
+NB,New Brunswick,false,false,province
+NL,Newfoundland and Labrador,false,false,province
+NS,Nova Scotia,false,false,province
+NT,Northwest Territories,false,false,province
+NU,Nunavut,false,false,province
+ON,Ontario,false,true,province
+PE,Prince Edward Island,false,false,province
+QC,Quebec,false,true,province
+SK,Saskatchewan,false,false,province
+YT,Yukon,false,false,province
