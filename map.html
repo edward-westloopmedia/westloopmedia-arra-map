@@ -503,6 +503,66 @@
                       <div class="container">
                         <!-- * * * * * * * *  ADD CONTENT HERE * * * * * * * * -->
                         <style>
+                          #America-ND,
+                          #America-HI,
+                          #America-WA,
+                          #America-CA,
+                          #America-NM,
+                          #America-WY,
+                          #America-AR,
+                          #America-KS,
+                          #America-NH,
+                          #America-RI,
+                          #America-AL,
+                          #America-IL,
+                          #America-NC,
+                          #America-WV,
+                          #America-MD,
+                          #America-NY,
+                          #America-MI {
+                            fill: #193549;
+                          }
+
+                          #America-ID,
+                          #America-AZ,
+                          #America-CO,
+                          #America-MO,
+                          #America-VT,
+                          #America-MS,
+                          #America-IN,
+                          #America-VA,
+                          #America-WI {
+                            fill: #82c48b;
+                          }
+
+                          #America-MN,
+                          #America-MT,
+                          #America-NV,
+                          #America-NE,
+                          #America-TX,
+                          #America-CT,
+                          #America-GA,
+                          #America-KY,
+                          #America-PA,
+                          #America-ME,
+                          #America-AK {
+                            fill: #3c9650;
+                          }
+
+                          #America-MA,
+                          #America-OR,
+                          #America-UT,
+                          #America-IA,
+                          #America-OK,
+                          #America-SD,
+                          #America-LA,
+                          #America-FL,
+                          #America-SC,
+                          #America-OH,
+                          #America-TN,
+                          #America-NJ {
+                            fill: #426b7f;
+                          }
                           #map_control_wrapper {
                             /*Center Alignment*/
                             display: flex;
@@ -626,10 +686,10 @@
                                     height: auto;
                                   }
                                   path {
-                                    fill: #82c48b;
+                                    /*fill: #82c48b;*/
                                   }
                                   path.location {
-                                    fill: #3c9650;
+                                    /*fill: #3c9650;*/
                                     transition: ease filter 0.3s;
                                     filter: brightness(1);
                                     &:hover {
@@ -758,6 +818,92 @@
                             vector-effect: non-scaling-stroke;
                           }
                           /* NEVER TOUCH THIS CODE ⬆️*/
+
+                          #US-ND,
+                          #US-HI,
+                          #US-WA,
+                          #US-CA,
+                          #US-NM,
+                          #US-WY,
+                          #US-AR,
+                          #US-KS,
+                          #US-NH,
+                          #US-RI,
+                          #US-AL,
+                          #US-IL,
+                          #US-NC,
+                          #US-WV,
+                          #US-MD,
+                          #US-NY,
+                          #US-MI {
+                            fill: #193549;
+                          }
+
+                          #US-ID,
+                          #US-AZ,
+                          #US-CO,
+                          #US-MO,
+                          #US-VT,
+                          #US-MS,
+                          #US-IN,
+                          #US-VA,
+                          #US-WI {
+                            fill: #82c48b;
+                          }
+
+                          #US-MN,
+                          #US-MT,
+                          #US-NV,
+                          #US-NE,
+                          #US-TX,
+                          #US-CT,
+                          #US-GA,
+                          #US-KY,
+                          #US-PA,
+                          #US-ME,
+                          #US-AK {
+                            fill: #3c9650;
+                          }
+
+                          #US-MA,
+                          #US-OR,
+                          #US-UT,
+                          #US-IA,
+                          #US-OK,
+                          #US-SD,
+                          #US-LA,
+                          #US-FL,
+                          #US-SC,
+                          #US-OH,
+                          #US-TN,
+                          #US-NJ {
+                            fill: #426b7f;
+                          }
+
+                          #Canada-AB,
+                          #Canada-SK,
+                          #Canada-MB {
+                            fill: #0b3c5d;
+                          }
+
+                          #Canada-ON,
+                          #Canada-QC {
+                            fill: #1d70b8;
+                          }
+
+                          #Canada-BC,
+                          #Canada-NS,
+                          #Canada-NB,
+                          #Canada-NL,
+                          #Canada-PE {
+                            fill: #4ea3d9;
+                          }
+
+                          #Canada-NT,
+                          #Canada-NU,
+                          #Canada-YT {
+                            fill: #a6d8ff;
+                          }
                         </style>
 
                         <div id="map_control_wrapper">
@@ -1148,7 +1294,7 @@
                             const res = await fetch("./map.csv");
                             const text = await res.text();
 
-                            const rows = text.trim().split("\n").slice(1); // 헤더 제거
+                            const rows = text.trim().split("\n").slice(1);
                             const data = rows.map((row) => {
                               const [
                                 code,
