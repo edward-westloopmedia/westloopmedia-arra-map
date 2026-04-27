@@ -877,6 +877,9 @@
                             font-weight: 600;
                             cursor: pointer;
                             transition: all 0.2s;
+                            position: fixed;
+                            bottom: 50px;
+                            right: 190px;
                           }
 
                           #editmode.active {
@@ -898,6 +901,9 @@
                             font-weight: 600;
                             cursor: pointer;
                             transition: all 0.2s;
+                            position: fixed;
+                            bottom: 50px;
+                            right: 50px;
                           }
 
                           #downloadBtn:hover {
@@ -1018,8 +1024,9 @@
                             text-align: center;
                             padding: 6px;
                             font-weight: 600;
-                            font-size: 14px;
+                            font-size: 20px;
                             z-index: 9999;
+                            height: 40px;
                           }
 
                           #editmodeBanner.active {
@@ -1037,10 +1044,11 @@
                           </div>
                         </div>
 
-                        <h3>Specification map</h3>
-                        <p>Click or select a state</p>
-
                         <div id="map_control_wrapper">
+                          <h3 style="margin: 0 auto">
+                            Specification Map Editor
+                          </h3>
+                          <p style="margin: 0 auto">Click or select a state</p>
                           <div class="country_btns_wrapper">
                             <button class="country_btn active" id="America_Btn">
                               USA
