@@ -10,24 +10,24 @@ DE,Delaware,true,false,state
 FL,Florida,true,false,state
 GA,Georgia,true,false,state
 HI,Hawaii,true,false,state
-ID,Idaho,false,false,state
-IL,Illinois,false,false,state
-IN,Indiana,false,false,state
-IA,Iowa,false,false,state
-KS,Kansas,false,false,state
-KY,Kentucky,false,false,state
-LA,Louisiana,false,false,state
+ID,Idaho,true,false,state
+IL,Illinois,true,false,state
+IN,Indiana,true,false,state
+IA,Iowa,true,false,state
+KS,Kansas,true,false,state
+KY,Kentucky,true,false,state
+LA,Louisiana,true,false,state
 ME,Maine,true,false,state
 MD,Maryland,true,false,state
 MA,Massachusetts,true,false,state
 MI,Michigan,true,false,state
 MN,Minnesota,true,false,state
 MS,Mississippi,true,false,state
-MO,Missouri,false,false,state
-MT,Montana,false,false,state
-NE,Nebraska,false,false,state
-NV,Nevada,false,false,state
-NH,New Hampshire,false,false,state
+MO,Missouri,true,false,state
+MT,Montana,true,false,state
+NE,Nebraska,true,false,state
+NV,Nevada,true,false,state
+NH,New Hampshire,true,false,state
 NJ,New Jersey,true,false,state
 NM,New Mexico,true,false,state
 NY,New York,true,false,state
@@ -35,12 +35,12 @@ NC,North Carolina,true,false,state
 ND,North Dakota,true,false,state
 OH,Ohio,true,false,state
 OK,Oklahoma,true,false,state
-OR,Oregon,false,false,state
-PA,Pennsylvania,false,false,state
-RI,Rhode Island,false,false,state
-SC,South Carolina,false,false,state
-SD,South Dakota,false,false,state
-TN,Tennessee,false,false,state
+OR,Oregon,true,false,state
+PA,Pennsylvania,true,false,state
+RI,Rhode Island,true,false,state
+SC,South Carolina,true,false,state
+SD,South Dakota,true,false,state
+TN,Tennessee,true,false,state
 TX,Texas,true,false,state
 UT,Utah,true,false,state
 VT,Vermont,true,false,state
@@ -52,13 +52,13 @@ WY,Wyoming,true,false,state
 AB,Alberta,false,true,province
 BC,British Columbia,false,true,province
 MB,Manitoba,false,true,province
-NB,New Brunswick,false,false,province
-NL,Newfoundland and Labrador,false,false,province
-NS,Nova Scotia,false,false,province
-NT,Northwest Territories,false,false,province
-NU,Nunavut,false,false,province
+NB,New Brunswick,false,true,province
+NL,Newfoundland and Labrador,false,true,province
+NS,Nova Scotia,false,true,province
+NT,Northwest Territories,false,true,province
+NU,Nunavut,false,true,province
 ON,Ontario,false,true,province
-PE,Prince Edward Island,false,false,province
 QC,Quebec,false,true,province
-SK,Saskatchewan,false,false,province
-YT,Yukon,false,false,province
+SK,Saskatchewan,false,true,province
+YT,Yukon,false,true,province
+PE,Prince Edward Island,false,true,province
