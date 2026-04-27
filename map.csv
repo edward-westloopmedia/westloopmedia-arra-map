@@ -1,64 +1,64 @@
-code,name,inAmericaStates,inCanadaProvinces,type
-AL,Alabama,true,false,state
-AK,Alaska,true,false,state
-AZ,Arizona,true,false,state
-AR,Arkansas,true,false,state
-CA,California,true,false,state
-CO,Colorado,true,false,state
-CT,Connecticut,true,false,state
-DE,Delaware,true,false,state
-FL,Florida,true,false,state
-GA,Georgia,true,false,state
-HI,Hawaii,true,false,state
-ID,Idaho,true,false,state
-IL,Illinois,true,false,state
-IN,Indiana,true,false,state
-IA,Iowa,true,false,state
-KS,Kansas,true,false,state
-KY,Kentucky,true,false,state
-LA,Louisiana,true,false,state
-ME,Maine,true,false,state
-MD,Maryland,true,false,state
-MA,Massachusetts,true,false,state
-MI,Michigan,true,false,state
-MN,Minnesota,true,false,state
-MS,Mississippi,true,false,state
-MO,Missouri,true,false,state
-MT,Montana,true,false,state
-NE,Nebraska,true,false,state
-NV,Nevada,true,false,state
-NH,New Hampshire,true,false,state
-NJ,New Jersey,true,false,state
-NM,New Mexico,true,false,state
-NY,New York,true,false,state
-NC,North Carolina,true,false,state
-ND,North Dakota,true,false,state
-OH,Ohio,true,false,state
-OK,Oklahoma,true,false,state
-OR,Oregon,true,false,state
-PA,Pennsylvania,true,false,state
-RI,Rhode Island,true,false,state
-SC,South Carolina,true,false,state
-SD,South Dakota,true,false,state
-TN,Tennessee,true,false,state
-TX,Texas,true,false,state
-UT,Utah,true,false,state
-VT,Vermont,true,false,state
-VA,Virginia,true,false,state
-WA,Washington,true,false,state
-WV,West Virginia,true,false,state
-WI,Wisconsin,true,false,state
-WY,Wyoming,true,false,state
-AB,Alberta,false,true,province
-BC,British Columbia,false,true,province
-MB,Manitoba,false,true,province
-NB,New Brunswick,false,true,province
-NL,Newfoundland and Labrador,false,true,province
-NS,Nova Scotia,false,true,province
-NT,Northwest Territories,false,true,province
-NU,Nunavut,false,true,province
-ON,Ontario,false,true,province
-QC,Quebec,false,true,province
-SK,Saskatchewan,false,true,province
-YT,Yukon,false,true,province
-PE,Prince Edward Island,false,true,province
+code,name,inAmericaStates,inCanadaProvinces,type,links
+AL,Alabama,true,false,state,[{"Cold Planing":"https://www.dot.state.al.us/publications/construction/pdf/Specifications/2022/SpecBookComplete.pdf"}]
+AK,Alaska,true,false,state,[{"Cold Planing":"https://dot.alaska.gov/stwddes/dcsspecs/airportspecifications.shtml"},{"Mill":"https://dot.alaska.gov/stwddes/dcsspecs/assets/pdf/hwyspecs/sshc2020.pdf"}]
+AZ,Arizona,true,false,state,[{"Cold Planing":"https://azdot.gov/sites/default/files/media/2021/04/2021_Standard_Specifications_for_Road_and_Bridge_Construction_PC.pdf"}]
+AR,Arkansas,true,false,state,
+CA,California,true,false,state,[{"Cold Planing":"https://dot.ca.gov/-/media/dot-media/programs/design/documents/2023_stdspecs-a11y.pdf"}]
+CO,Colorado,true,false,state,[{"Cold Planing":"https://www.codot.gov/business/designsupport/cdot-construction-specifications/2023-construction-specifications/2023-specs-book/2023-division-200.pdf"}]
+CT,Connecticut,true,false,state,[{"Cold Planing":"https://portal.ct.gov/dot/business/manuals?language=en_US"}]
+DE,Delaware,true,false,state,[{"Cold Planing":"https://deldot.gov/Publications/manuals/standard_specifications/pdfs/2022/Standard_Specification_Revision2_JUNE2022.pdf"}]
+FL,Florida,true,false,state,[{"Cold Planing":"https://fdotwww.blob.core.windows.net/sitefinity/docs/default-source/specifications/by-year/fy-2025-26/ebook/2025-26-ebook-compressed.pdf?sfvrsn=a07d3f95_2"}]
+GA,Georgia,true,false,state,[{"Cold Planing":"https://www.dot.ga.gov/PartnerSmart/Business/Source/specs/2021StandardSpecifications.pdf"}]
+HI,Hawaii,true,false,state,[{"Cold Planing":"https://hidot.hawaii.gov/highways/files/2013/01/415_Print.pdf"}]
+ID,Idaho,true,false,state,[{"Cold Planing":"https://apps.itd.idaho.gov/Apps/manuals/SpecBook/SpecBook23.pdf"}]
+IL,Illinois,true,false,state,
+IN,Indiana,true,false,state,[{"Cold Planing":"https://www.in.gov/dot/div/contracts/standards/book/sep23/sep.htm"}]
+IA,Iowa,true,false,state,[{"Cold Planing":"https://iowadot.gov/consultants-contractors/specifications"}]
+KS,Kansas,true,false,state,[{"Cold Planing":"https://www.ksdot.gov/doing-business/highway-contractors/contractor-resources/specifications-for-state-road-and-bridge-construction"}]
+KY,Kentucky,true,false,state,[{"Cold Planing":"https://transportation.ky.gov/Construction/Pages/Kentucky-Standard-Specifications.aspx"}]
+LA,Louisiana,true,false,state,
+ME,Maine,true,false,state,
+MD,Maryland,true,false,state,
+MA,Massachusetts,true,false,state,[{"Cold Planing":"https://www.mass.gov/doc/2026-standard-specifications-for-highways-and-bridges-division-ii-construction-details/download"}]
+MI,Michigan,true,false,state,[{"Cold Planing":"https://www.michigan.gov/mdot/-/media/Project/Websites/MDOT/Business/Construction/Standard-Specifications-Construction/2020-Standard-Specifications-Construction.pdf?rev=b944f71da7fb4f9c879f74659f64795b&hash=175301DF2A3988964AE31F023362A5B3"}]
+MN,Minnesota,true,false,state,[{"Cold Planing":"https://www.dot.state.mn.us/pre-letting/spec/"}]
+MS,Mississippi,true,false,state,[{"Cold Planing":"https://mdot.ms.gov/documents/Construction/Specifications/2017%20Standard%20Specifications.pdf"}]
+MO,Missouri,true,false,state,[{"Cold Planing":"https://www.modot.org/sites/default/files/documents/2024%20Missouri%20Standard%20Specific%20-%20MHTC%20%28July%202024%29_sign.pdf"}]
+MT,Montana,true,false,state,[{"Cold Planing":"https://www.mdt.mt.gov/other/webdata/external/const/specifications/2025/2025-SPEC-BOOK-JAN.pdf"}]
+NE,Nebraska,true,false,state,[{"Cold Planing":"https://dot.nebraska.gov/media/g4qp4y0d/2017-specbook.pdf"}]
+NV,Nevada,true,false,state,[{"Cold Planing":"https://www.dot.nv.gov/home/showpublisheddocument/6916/636257041112930000"}]
+NH,New Hampshire,true,false,state,[{"Cold Planing":"https://www.dot.nh.gov/about-nh-dot/divisions-bureaus-districts/highway-design/2016-standard-specifications"}]
+NJ,New Jersey,true,false,state,[{"Cold Planing":"https://www.nj.gov/transportation/eng/specs/2019/pdf/StandSpecRoadBridge%202019%2020240710.pdf"}]
+NM,New Mexico,true,false,state,
+NY,New York,true,false,state,[{"Cold Planing":"https://www.dot.ny.gov/main/business-center/engineering/specifications/english-spec-repository/2025_5_specs_usc_tc_vol2.pdf"}]
+NC,North Carolina,true,false,state,[{"Cold Planing":"https://connect.ncdot.gov/resources/Specifications/2024StandardSpecifications/2024%20Standard%20Specifications%20for%20Roads%20and%20Structures.pdf"}]
+ND,North Dakota,true,false,state,[{"Cold Planing":"https://www.dot.nd.gov/sites/www/files/documents/Standard%20Specifications/%602024%20NDDOT%20Standard%20Specifications%20for%20Road%20and%20Bridge%20Construction.pdf"}]
+OH,Ohio,true,false,state,[{"Cold Planing":"https://www.dot.state.oh.us/Divisions/ConstructionMgt/OnlineDocs/Pages/2023-Online-Spec-Book.aspx"}]
+OK,Oklahoma,true,false,state,
+OR,Oregon,true,false,state,[{"Cold Planing":"https://www.oregon.gov/odot/Business/Specs/2024_STANDARD_SPECIFICATIONS.pdf"}]
+PA,Pennsylvania,true,false,state,
+RI,Rhode Island,true,false,state,[{"Cold Planing":"https://www.dot.ri.gov/business/contractorsandconsultants.php"}]
+SC,South Carolina,true,false,state,[{"Cold Planing":"https://www.scdot.org/content/dam/scdot-legacy/business/pdf/2007_full_specbook.pdf"}]
+SD,South Dakota,true,false,state,[{"Cold Planing":"https://dot.sd.gov/doing-business/contractors/standard-specifications/2015-standard-specifications#listItemLink_1292"}]
+TN,Tennessee,true,false,state,
+TX,Texas,true,false,state,[{"Cold Planing":"https://ftp.txdot.gov/pub/txdot-info/des/spec-book-1114.pdf"}]
+UT,Utah,true,false,state,
+VT,Vermont,true,false,state,[{"Cold Planing":"https://vtrans.vermont.gov/highway/construct-material/construct-services/pre-contractspecifications/vermont/2024"}]
+VA,Virginia,true,false,state,[{"Cold Planing":"https://www.vdot.virginia.gov/media/vdotvirginiagov/doing-business/technical-guidance-and-support/technical-guidance-documents/construction/VDOT_2020_RB_Specs_acc071522.pdf"}]
+WA,Washington,true,false,state,[{"Cold Planing":"https://www.wsdot.wa.gov/publications/manuals/fulltext/M41-10/SS.pdf"}]
+WV,West Virginia,true,false,state,[{"Cold Planing":"https://transportation.wv.gov/highways/TechnicalSupport/specifications/Documents/2023_Standard_%2812-16-22%29.pdf"}]
+WI,Wisconsin,true,false,state,[{"Cold Planing":"https://wisconsindot.gov/Pages/doing-bus/eng-consultants/cnslt-rsrces/rdwy/stndspec.aspx"}]
+WY,Wyoming,true,false,state,[{"Cold Planing":"https://www.dot.state.wy.us/files/live/sites/wydot/files/shared/Construction/2021%20Standard%20Specifications/Wyoming%202021%20Standard%20Specifications%20for%20Road%20and%20Bridge%20Construction.pdf"}]
+AB,Alberta,false,true,province,[{"Cold Planing":"https://open.alberta.ca/publications/standard-specifications-for-highway-construction-edition-16"}]
+BC,British Columbia,false,true,province,[{"Cold Planing":"https://www2.gov.bc.ca/gov/content/transportation/transportation-infrastructure/engineering-standards-guidelines/standard-specifications-for-highway-construction"}]
+MB,Manitoba,false,true,province,[{"Cold Planing":"https://www.gov.mb.ca/mti/contracts/manual.html"}]
+NB,New Brunswick,false,true,province,[{"Cold Planing":"https://www2.gnb.ca/content/gnb/en/departments/dti/tenders_contracts/content/2023_standard_specifications.html"}]
+NL,Newfoundland and Labrador,false,true,province,[{"Cold Planing":"https://www.gov.nl.ca/ti/hdc/highway-specification-book/division-3/"}]
+NS,Nova Scotia,false,true,province,[{"Cold Planing":"https://novascotia.ca/tran/highways/ssm/"}]
+NT,Northwest Territories,false,true,province,[{"Cold Planing":"https://www.inf.gov.nt.ca/sites/inf/files/resources/combined_standard_specification_for_highway_construction_20210331.pdf"},{"Cold Planing":"https://www.inf.gov.nt.ca/en/surface-design-and-construction-highways"}]
+NU,Nunavut,false,true,province,
+ON,Ontario,false,true,province,[{"Cold Planing":"https://www.library.mto.gov.on.ca/SydneyPLUS/TechPubs/Portal/tp/opsViews.aspx?lang=en-US"}]
+QC,Quebec,false,true,province,
+SK,Saskatchewan,false,true,province,[{"Cold Planing":"https://publications.saskatchewan.ca/#/products/109108"}]
+YT,Yukon,false,true,province,
+PE,Prince Edward Island,false,true,province,[{"Cold Planing":"https://www.princeedwardisland.ca/en/publication/general-provisions-and-contract-specifications-for-highway-construction"}]

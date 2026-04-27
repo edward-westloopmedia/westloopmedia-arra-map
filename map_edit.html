@@ -865,7 +865,177 @@
                             fill: #f2eded;
                             letter-spacing: 0.05em;
                           }
+
+                          /* editmode css */
+                          /* ===== EDIT MODE BUTTON ===== */
+                          #editmode {
+                            padding: 8px 16px;
+                            border: 2px solid #3c9650;
+                            border-radius: 6px;
+                            background: #fff;
+                            color: #3c9650;
+                            font-weight: 600;
+                            cursor: pointer;
+                            transition: all 0.2s;
+                          }
+
+                          #editmode.active {
+                            background: #3c9650;
+                            color: #fff;
+                          }
+
+                          #editmode:hover {
+                            opacity: 0.85;
+                          }
+
+                          /* ===== DOWNLOAD BUTTON ===== */
+                          #downloadBtn {
+                            padding: 8px 16px;
+                            border: 2px solid #2a6ebb;
+                            border-radius: 6px;
+                            background: #2a6ebb;
+                            color: #fff;
+                            font-weight: 600;
+                            cursor: pointer;
+                            transition: all 0.2s;
+                          }
+
+                          #downloadBtn:hover {
+                            opacity: 0.85;
+                          }
+
+                          /* ===== EDIT MODE 활성화 시 지도 커서 ===== */
+                          body.edit-mode .state path.location {
+                            cursor: crosshair;
+                          }
+
+                          body.edit-mode #editmode {
+                            /* 혹시 body class로 관리할 경우 */
+                          }
+
+                          /* ===== EDIT POPUP ===== */
+                          .edit-popup-content {
+                            display: flex;
+                            flex-direction: column;
+                            gap: 12px;
+                          }
+
+                          .edit-link-list {
+                            display: flex;
+                            flex-direction: column;
+                            gap: 8px;
+                            max-height: 200px;
+                            overflow-y: auto;
+                          }
+
+                          .edit-link-item {
+                            display: flex;
+                            align-items: center;
+                            gap: 8px;
+                            padding: 6px 8px;
+                            border: 1px solid #ddd;
+                            border-radius: 6px;
+                            font-size: 14px;
+                          }
+
+                          .edit-link-item span {
+                            flex: 1;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                            white-space: nowrap;
+                          }
+
+                          .edit-link-item button {
+                            padding: 2px 8px;
+                            border-radius: 4px;
+                            border: none;
+                            cursor: pointer;
+                            font-size: 12px;
+                          }
+
+                          .edit-link-item .btn-delete {
+                            background: #e74c3c;
+                            color: #fff;
+                          }
+
+                          .edit-link-item .btn-edit {
+                            background: #f0ad4e;
+                            color: #fff;
+                          }
+
+                          /* ===== ADD FORM ===== */
+                          .edit-add-form {
+                            display: flex;
+                            flex-direction: column;
+                            gap: 8px;
+                            padding-top: 8px;
+                            border-top: 1px solid #eee;
+                          }
+
+                          .edit-add-form select,
+                          .edit-add-form input[type="text"],
+                          .edit-add-form input[type="url"] {
+                            width: 100%;
+                            padding: 6px 10px;
+                            border: 1px solid #ccc;
+                            border-radius: 6px;
+                            font-size: 14px;
+                            box-sizing: border-box;
+                          }
+
+                          .edit-add-form input#customName {
+                            display: none;
+                          }
+
+                          .edit-add-form input#customName.visible {
+                            display: block;
+                          }
+
+                          .edit-add-form .btn-add {
+                            padding: 6px 12px;
+                            background: #3c9650;
+                            color: #fff;
+                            border: none;
+                            border-radius: 6px;
+                            cursor: pointer;
+                            font-weight: 600;
+                            transition: opacity 0.2s;
+                          }
+
+                          .edit-add-form .btn-add:hover {
+                            opacity: 0.85;
+                          }
+
+                          /* ===== EDIT MODE 배너 ===== */
+                          #editmodeBanner {
+                            display: none;
+                            position: fixed;
+                            top: 0;
+                            left: 0;
+                            width: 100%;
+                            background: #e67e22;
+                            color: #fff;
+                            text-align: center;
+                            padding: 6px;
+                            font-weight: 600;
+                            font-size: 14px;
+                            z-index: 9999;
+                          }
+
+                          #editmodeBanner.active {
+                            display: block;
+                          }
                         </style>
+
+                        <div>
+                          <!-- 기존 버튼들 근처에 추가 -->
+                          <button id="editmode">Edit Mode</button>
+                          <button id="downloadBtn">Download CSV</button>
+                          <!-- body 최상단에 -->
+                          <div id="editmodeBanner">
+                            ⚠️ Edit Mode ON — Click any state to edit
+                          </div>
+                        </div>
 
                         <h3>Specification map</h3>
                         <p>Click or select a state</p>
@@ -890,11 +1060,11 @@
                               </div>
 
                               <div class="aContainer">
-                                <a>Cold Planing</a>
+                                <!-- <a>Cold Planing</a>
                                 <a>Hot-In-Place Recycling</a>
                                 <a>Cold Recycling</a>
                                 <a>Full Depth Reclamation</a>
-                                <a>Sail Stabilization</a>
+                                <a>Sail Stabilization</a> -->
                               </div>
                             </div>
 
@@ -1337,6 +1507,7 @@
                             let currentData = americaStates;
                             let selectedValue = null;
                             let isOpen = false;
+                            let isEditMode = false;
 
                             /* ===== LABEL STATES ===== */
                             function labelStates(
@@ -1593,45 +1764,14 @@
                               document.getElementById("overlay").style.display =
                                 "block";
 
-                              // aContainer 동적 렌더링
                               const aContainer =
                                 document.querySelector(".aContainer");
                               aContainer.innerHTML = "";
 
-                              const links = stateLinks[code] || [];
-
-                              if (links.length === 0) {
-                                const p = document.createElement("p");
-                                p.textContent =
-                                  "Sorry, we do not have data yet";
-                                aContainer.appendChild(p);
+                              if (isEditMode) {
+                                renderEditUI(aContainer, code);
                               } else {
-                                // 중복 이름 카운팅
-                                const nameCount = {};
-                                links.forEach((linkObj) => {
-                                  const name = Object.keys(linkObj)[0];
-                                  nameCount[name] = (nameCount[name] || 0) + 1;
-                                });
-
-                                const nameIndex = {};
-                                links.forEach((linkObj) => {
-                                  const name = Object.keys(linkObj)[0];
-                                  const url = Object.values(linkObj)[0];
-
-                                  const a = document.createElement("a");
-                                  a.href = url;
-                                  a.target = "_blank";
-
-                                  if (nameCount[name] > 1) {
-                                    nameIndex[name] =
-                                      (nameIndex[name] || 0) + 1;
-                                    a.textContent = `${name} ${nameIndex[name]}`;
-                                  } else {
-                                    a.textContent = name;
-                                  }
-
-                                  aContainer.appendChild(a);
-                                });
+                                renderViewUI(aContainer, code);
                               }
 
                               popup.style.pointerEvents = "none";
@@ -1742,6 +1882,270 @@
                                   });
                                 });
                             }
+
+                            document
+                              .getElementById("editmode")
+                              .addEventListener("click", () => {
+                                isEditMode = !isEditMode;
+                                document
+                                  .getElementById("editmode")
+                                  .classList.toggle("active", isEditMode);
+                                document
+                                  .getElementById("editmodeBanner")
+                                  .classList.toggle("active", isEditMode);
+                                // 팝업 닫기
+                                closePopup();
+                              });
+
+                            function renderViewUI(aContainer, code) {
+                              const links = stateLinks[code] || [];
+
+                              if (links.length === 0) {
+                                const p = document.createElement("p");
+                                p.textContent =
+                                  "Sorry, we do not have data yet";
+                                aContainer.appendChild(p);
+                                return;
+                              }
+
+                              const nameCount = {};
+                              links.forEach((linkObj) => {
+                                const name = Object.keys(linkObj)[0];
+                                nameCount[name] = (nameCount[name] || 0) + 1;
+                              });
+
+                              const nameIndex = {};
+                              links.forEach((linkObj) => {
+                                const name = Object.keys(linkObj)[0];
+                                const url = Object.values(linkObj)[0];
+
+                                const a = document.createElement("a");
+                                a.href = url;
+                                a.target = "_blank";
+
+                                if (nameCount[name] > 1) {
+                                  nameIndex[name] = (nameIndex[name] || 0) + 1;
+                                  a.textContent = `${name} ${nameIndex[name]}`;
+                                } else {
+                                  a.textContent = name;
+                                }
+
+                                aContainer.appendChild(a);
+                              });
+                            }
+
+                            const PRESET_NAMES = [
+                              "Hot-In-Place Recycling",
+                              "Cold Recycling",
+                              "Full Depth Reclamation",
+                              "Soil Stabilization",
+                              "Mill",
+                              "Cold Planing",
+                            ];
+
+                            function renderEditUI(aContainer, code) {
+                              const links = stateLinks[code] || [];
+
+                              // ── 기존 링크 목록 ──
+                              const listDiv = document.createElement("div");
+                              listDiv.classList.add("edit-link-list");
+
+                              function refreshList() {
+                                listDiv.innerHTML = "";
+                                const currentLinks = stateLinks[code] || [];
+
+                                if (currentLinks.length === 0) {
+                                  const empty = document.createElement("p");
+                                  empty.style.color = "#999";
+                                  empty.style.fontSize = "13px";
+                                  empty.textContent = "No links yet.";
+                                  listDiv.appendChild(empty);
+                                  return;
+                                }
+
+                                currentLinks.forEach((linkObj, idx) => {
+                                  const name = Object.keys(linkObj)[0];
+                                  const url = Object.values(linkObj)[0];
+
+                                  const item = document.createElement("div");
+                                  item.classList.add("edit-link-item");
+
+                                  const span = document.createElement("span");
+                                  span.title = `${name} — ${url}`;
+                                  span.textContent = `${name} → ${url}`;
+
+                                  const btnEdit =
+                                    document.createElement("button");
+                                  btnEdit.classList.add("btn-edit");
+                                  btnEdit.textContent = "Edit";
+                                  btnEdit.addEventListener("click", () => {
+                                    // 선택란에 기존 값 채우기
+                                    const nameVal = name;
+                                    const isPreset =
+                                      PRESET_NAMES.includes(nameVal);
+                                    nameSelect.value = isPreset
+                                      ? nameVal
+                                      : "custom";
+                                    if (!isPreset) {
+                                      customNameInput.value = nameVal;
+                                      customNameInput.classList.add("visible");
+                                    } else {
+                                      customNameInput.value = "";
+                                      customNameInput.classList.remove(
+                                        "visible"
+                                      );
+                                    }
+                                    urlInput.value = url;
+                                    addBtn.textContent = "Update";
+
+                                    // 업데이트 시 해당 idx 교체
+                                    addBtn.onclick = () => {
+                                      const updatedName =
+                                        nameSelect.value === "custom"
+                                          ? customNameInput.value.trim()
+                                          : nameSelect.value;
+                                      const updatedUrl = urlInput.value.trim();
+
+                                      if (!updatedName || !updatedUrl) return;
+
+                                      stateLinks[code][idx] = {
+                                        [updatedName]: updatedUrl,
+                                      };
+                                      resetForm();
+                                      refreshList();
+                                    };
+                                  });
+
+                                  const btnDelete =
+                                    document.createElement("button");
+                                  btnDelete.classList.add("btn-delete");
+                                  btnDelete.textContent = "Del";
+                                  btnDelete.addEventListener("click", () => {
+                                    stateLinks[code].splice(idx, 1);
+                                    refreshList();
+                                  });
+
+                                  item.appendChild(span);
+                                  item.appendChild(btnEdit);
+                                  item.appendChild(btnDelete);
+                                  listDiv.appendChild(item);
+                                });
+                              }
+
+                              refreshList();
+
+                              // ── 추가 폼 ──
+                              const form = document.createElement("div");
+                              form.classList.add("edit-add-form");
+
+                              const nameSelect =
+                                document.createElement("select");
+                              const defaultOpt =
+                                document.createElement("option");
+                              defaultOpt.value = "";
+                              defaultOpt.textContent = "-- Select Name --";
+                              nameSelect.appendChild(defaultOpt);
+
+                              PRESET_NAMES.forEach((n) => {
+                                const opt = document.createElement("option");
+                                opt.value = n;
+                                opt.textContent = n;
+                                nameSelect.appendChild(opt);
+                              });
+
+                              const customOpt =
+                                document.createElement("option");
+                              customOpt.value = "custom";
+                              customOpt.textContent = "Custom Field";
+                              nameSelect.appendChild(customOpt);
+
+                              const customNameInput =
+                                document.createElement("input");
+                              customNameInput.type = "text";
+                              customNameInput.id = "customName";
+                              customNameInput.placeholder = "Enter custom name";
+
+                              nameSelect.addEventListener("change", () => {
+                                if (nameSelect.value === "custom") {
+                                  customNameInput.classList.add("visible");
+                                } else {
+                                  customNameInput.classList.remove("visible");
+                                  customNameInput.value = "";
+                                }
+                              });
+
+                              const urlInput = document.createElement("input");
+                              urlInput.type = "url";
+                              urlInput.placeholder = "https://example.com";
+
+                              const addBtn = document.createElement("button");
+                              addBtn.classList.add("btn-add");
+                              addBtn.textContent = "Add";
+
+                              function resetForm() {
+                                nameSelect.value = "";
+                                customNameInput.value = "";
+                                customNameInput.classList.remove("visible");
+                                urlInput.value = "";
+                                addBtn.textContent = "Add";
+                                addBtn.onclick = handleAdd;
+                              }
+
+                              function handleAdd() {
+                                const selectedName =
+                                  nameSelect.value === "custom"
+                                    ? customNameInput.value.trim()
+                                    : nameSelect.value;
+                                const url = urlInput.value.trim();
+
+                                if (!selectedName || !url) return;
+
+                                if (!stateLinks[code]) stateLinks[code] = [];
+                                stateLinks[code].push({ [selectedName]: url });
+
+                                resetForm();
+                                refreshList();
+                              }
+
+                              addBtn.onclick = handleAdd;
+
+                              form.appendChild(nameSelect);
+                              form.appendChild(customNameInput);
+                              form.appendChild(urlInput);
+                              form.appendChild(addBtn);
+
+                              aContainer.classList.add("edit-popup-content");
+                              aContainer.appendChild(listDiv);
+                              aContainer.appendChild(form);
+                            }
+
+                            document
+                              .getElementById("downloadBtn")
+                              .addEventListener("click", () => {
+                                const header =
+                                  "code,name,inAmericaStates,inCanadaProvinces,type,links";
+
+                                const rows = data.map((r) => {
+                                  const links = stateLinks[r.code];
+                                  const linksStr =
+                                    links && links.length > 0
+                                      ? JSON.stringify(links)
+                                      : "";
+                                  return `${r.code},${r.name},${r.inAmericaStates},${r.inCanadaProvinces},${r.type},${linksStr}`;
+                                });
+
+                                const csvContent = [header, ...rows].join("\n");
+                                const blob = new Blob([csvContent], {
+                                  type: "text/csv;charset=utf-8;",
+                                });
+                                const url = URL.createObjectURL(blob);
+
+                                const a = document.createElement("a");
+                                a.href = url;
+                                a.download = "map.csv";
+                                a.click();
+                                URL.revokeObjectURL(url);
+                              });
 
                             /* ===== INIT ===== */
                             activateAmerica();
