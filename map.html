@@ -689,16 +689,19 @@
 
                                 #popup_title {
                                   font-size: 30px !important;
+                                  font-weight: 600 !important;
+                                  text-transform: uppercase !important;
+                                  margin-bottom: 0 !important;
                                 }
 
                                 #closeBtn {
-                                  width: 28px;
-                                  height: 28px;
-                                  border: 1px solid #ddd;
-                                  border-radius: 6px;
                                   background: none;
                                   cursor: pointer;
                                   font-size: 14px;
+                                  border: none;
+                                  position: absolute;
+                                  top: 7px;
+                                  right: 7px;
                                 }
                               }
                             }
@@ -706,11 +709,35 @@
                             .aContainer {
                               display: flex;
                               flex-direction: column;
-
                               a {
-                                font-size: 30px;
+                                color: #454545;
+                                font-size: 18px;
+                                position: relative;
+                                padding-left: 27px;
+                                line-height: 1.2;
+                                margin-bottom: 10px;
+                                border-bottom: 1px solid #ddd;
+                                padding-bottom: 10px;
+                                &::before {
+                                  content: "\f1c1";
+                                  color: var(--green);
+                                  font-family: "Font Awesome 7 Free";
+                                  font-weight: bold;
+                                  position: absolute;
+                                  left: 0;
+                                  top: 0;
+                                  transition: ease-out all 0.3s;
+                                }
+                                &:last-child {
+                                  border-bottom: 0;
+                                  padding-bottom: 0;
+                                  margin-bottom: 0;
+                                }
                                 &:hover {
-                                  color: #3c9650;
+                                  color: var(--green);
+                                  &::before {
+                                    left: 2px;
+                                  }
                                 }
                               }
                             }
@@ -884,7 +911,7 @@
 
                             <div id="popup">
                               <div class="popup_title_container">
-                                <span id="popup_title"></span>
+                                <h3 id="popup_title"></h3>
                                 <button id="closeBtn">✕</button>
                               </div>
 
