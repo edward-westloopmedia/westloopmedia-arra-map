@@ -710,23 +710,44 @@
                               display: flex;
                               flex-direction: column;
                               a {
+                                display: flex;
+                                gap: 10px;
                                 color: #454545;
                                 font-size: 18px;
                                 position: relative;
-                                padding-left: 27px;
                                 line-height: 1.2;
                                 margin-bottom: 10px;
                                 border-bottom: 1px solid #ddd;
                                 padding-bottom: 10px;
                                 &::before {
-                                  content: "\f1c1";
+                                  content: "\f0ac";
                                   color: var(--green);
                                   font-family: "Font Awesome 7 Free";
                                   font-weight: bold;
-                                  position: absolute;
-                                  left: 0;
-                                  top: 0;
+                                  justify-content: right;
+                                  display: flex;
+                                  width: 40px;
+                                  transform: translateX(0);
                                   transition: ease-out all 0.3s;
+                                }
+                                &.doc::before {
+                                  content: "\f15c";
+                                }
+                                &.pdf::before {
+                                  content: "\f1c1";
+                                }
+                                &.ppt::before {
+                                  content: "\f51b";
+                                }
+                                &.sheet::before {
+                                  content: "\f00a";
+                                }
+                                &.vid::before {
+                                  content: "\f167";
+                                  font-family: "Font Awesome 7 Brands";
+                                }
+                                &.web::before {
+                                  content: "\f0ac";
                                 }
                                 &:last-child {
                                   border-bottom: 0;
@@ -736,7 +757,7 @@
                                 &:hover {
                                   color: var(--green);
                                   &::before {
-                                    left: 2px;
+                                    transform: translateX(2px);
                                   }
                                 }
                               }
@@ -788,16 +809,6 @@
                               }
                             }
                           }
-
-                          /* NEVER TOUCH THIS CODE ⬇️*/
-                          svg path {
-                            fill: #ddd;
-                            stroke: #333;
-                            stroke-width: 1.5;
-                            vector-effect: non-scaling-stroke;
-                            cursor: pointer;
-                          }
-                          /* NEVER TOUCH THIS CODE ⬆️*/
 
                           #US-ND,
                           #US-HI,
@@ -892,6 +903,16 @@
                             fill: #f2eded;
                             letter-spacing: 0.05em;
                           }
+
+                          /* NEVER TOUCH THIS CODE ⬇️*/
+                          svg path {
+                            fill: #ddd;
+                            stroke: #333;
+                            stroke-width: 1.5;
+                            vector-effect: non-scaling-stroke;
+                            cursor: pointer;
+                          }
+                          /* NEVER TOUCH THIS CODE ⬆️*/
                         </style>
 
                         <div id="map_control_wrapper">
@@ -915,13 +936,7 @@
                                 <button id="closeBtn">✕</button>
                               </div>
 
-                              <div class="aContainer">
-                                <a>Cold Planing</a>
-                                <a>Hot-In-Place Recycling</a>
-                                <a>Cold Recycling</a>
-                                <a>Full Depth Reclamation</a>
-                                <a>Sail Stabilization</a>
-                              </div>
+                              <div class="aContainer"></div>
                             </div>
 
                             <div class="map_outer_wrapper">
@@ -1285,6 +1300,90 @@
                             provinceNames,
                             stateLinks;
 
+                          /* ===== CLASS OPTIONS ===== */
+                          const CLASS_OPTIONS = [
+                            {
+                              value: "",
+                              label: "Web (Default)",
+                              icon: "\uf0ac",
+                            },
+                            { value: "web", label: "Web", icon: "\uf0ac" },
+                            { value: "doc", label: "Document", icon: "\uf15c" },
+                            { value: "pdf", label: "PDF", icon: "\uf1c1" },
+                            {
+                              value: "ppt",
+                              label: "PowerPoint",
+                              icon: "\uf51b",
+                            },
+                            {
+                              value: "sheet",
+                              label: "Spreadsheet",
+                              icon: "\uf00a",
+                            },
+                            {
+                              value: "vid",
+                              label: "Video (YouTube)",
+                              icon: "\uf167",
+                            },
+                          ];
+
+                          /* ===== URL → CLASS INFERENCE ===== */
+                          function inferClass(url) {
+                            if (!url) return "";
+                            const lower = url.toLowerCase();
+
+                            if (
+                              lower.includes("youtube.com") ||
+                              lower.includes("youtu.be") ||
+                              lower.includes("vimeo.com")
+                            )
+                              return "vid";
+                            if (
+                              lower.includes("docs.google.com/spreadsheets") ||
+                              lower.includes("sheets.google.com")
+                            )
+                              return "sheet";
+                            if (
+                              lower.includes("docs.google.com/presentation") ||
+                              lower.includes("slides.google.com")
+                            )
+                              return "ppt";
+                            if (lower.includes("docs.google.com")) return "doc";
+                            if (lower.match(/\.pdf(\?|$)/)) return "pdf";
+                            if (lower.match(/\.(doc|docx)(\?|$)/)) return "doc";
+                            if (lower.match(/\.(ppt|pptx)(\?|$)/)) return "ppt";
+                            if (lower.match(/\.(xls|xlsx|csv)(\?|$)/))
+                              return "sheet";
+
+                            return "web";
+                          }
+
+                          /* ===== LEGACY FORMAT MIGRATION (backward compatible) =====
+   old: { "Link Name": "URL" }
+   new: { name: "Link Name", url: "URL", class: "pdf" }
+*/
+                          function normalizeLinkObj(linkObj) {
+                            // Already in new format
+                            if (
+                              linkObj.name !== undefined &&
+                              linkObj.url !== undefined
+                            ) {
+                              return {
+                                name: linkObj.name,
+                                url: linkObj.url,
+                                class: linkObj.class || "",
+                              };
+                            }
+                            // Convert from legacy format
+                            const name = Object.keys(linkObj)[0];
+                            const url = Object.values(linkObj)[0];
+                            return {
+                              name,
+                              url,
+                              class: inferClass(url),
+                            };
+                          }
+
                           async function jsonFetch() {
                             const res = await fetch("./map.csv");
                             const text = await res.text();
@@ -1310,7 +1409,9 @@
                               let links = [];
                               if (jsonPart) {
                                 try {
-                                  links = JSON.parse(jsonPart);
+                                  const raw = JSON.parse(jsonPart);
+                                  // Normalize (handles both old and new formats)
+                                  links = raw.map(normalizeLinkObj);
                                 } catch (e) {
                                   links = [];
                                 }
@@ -1368,7 +1469,7 @@
                             function labelStates(
                               svgContainer,
                               prefix,
-                              fontScale = 40
+                              fontScale = 48
                             ) {
                               svgContainer
                                 .querySelectorAll("[data-auto]")
@@ -1393,7 +1494,7 @@
                                   FL: { x: 765 },
                                   NY: { y: 164 },
                                   AK: { x: 120, y: 500 },
-                                  VT: { x: 800, y: 90 },
+                                  VT: { x: 795, y: 90 },
                                   NH: { x: 845, y: 80 },
                                   MA: { x: 915, y: 132 },
                                   RI: { x: 930, y: 165 },
@@ -1433,18 +1534,20 @@
                                 .querySelectorAll(`[id^="${prefix}-"]`)
                                 .forEach((el) => {
                                   const label = el.id.replace(`${prefix}-`, "");
-
                                   const bbox = el.getBBox();
                                   const cx = bbox.x + bbox.width / 2;
                                   const cy = bbox.y + bbox.height / 2;
-
                                   const ov = overrides[label] || {};
                                   const x = ov.x ?? cx;
                                   const y = ov.y ?? cy;
 
+                                  const targetPath = document.getElementById(
+                                    `${prefix}-${label}`
+                                  );
+
                                   if (hidden.has(label)) {
-                                    const boxW = fontSize * 1.8;
-                                    const boxH = fontSize * 1;
+                                    const boxW = fontSize * 2.2;
+                                    const boxH = fontSize * 1.2;
 
                                     const line = document.createElementNS(
                                       "http://www.w3.org/2000/svg",
@@ -1475,7 +1578,30 @@
                                     rect.setAttribute("fill-opacity", "1");
                                     rect.setAttribute("rx", 3);
                                     rect.setAttribute("data-auto", "true");
+                                    rect.setAttribute("cursor", "pointer");
                                     svg.appendChild(rect);
+
+                                    rect.addEventListener("click", () => {
+                                      selectedValue = label;
+                                      const name =
+                                        currentCountry === "America"
+                                          ? stateNames[label]
+                                          : provinceNames[label];
+                                      if (name) {
+                                        openPopup(name, label);
+                                        highlightState_StateClick(
+                                          `${prefix}-${label}`
+                                        );
+                                        renderList(currentData);
+                                      }
+                                    });
+                                    rect.addEventListener("mouseenter", () => {
+                                      targetPath.style.filter =
+                                        "brightness(1.2)";
+                                    });
+                                    rect.addEventListener("mouseleave", () => {
+                                      targetPath.style.filter = "brightness(1)";
+                                    });
                                   }
 
                                   const text = document.createElementNS(
@@ -1496,11 +1622,6 @@
                                   text.setAttribute("cursor", "pointer");
                                   text.textContent = label;
 
-                                  const targetPath = document.getElementById(
-                                    `${prefix}-${label}`
-                                  );
-
-                                  // 클릭 → 팝업
                                   text.addEventListener("click", () => {
                                     selectedValue = label;
                                     const name =
@@ -1516,7 +1637,6 @@
                                     }
                                   });
 
-                                  // hover → path 색상 변경 (path + text 둘 다)
                                   const hoverOn = () => {
                                     targetPath.style.filter = "brightness(1.2)";
                                   };
@@ -1594,7 +1714,6 @@
                                     isOpen = false;
                                     renderList(data);
                                     stateList.classList.toggle("open");
-
                                     const name =
                                       currentCountry === "America"
                                         ? stateNames[item]
@@ -1619,46 +1738,11 @@
                               document.getElementById("overlay").style.display =
                                 "block";
 
-                              // aContainer 동적 렌더링
                               const aContainer =
                                 document.querySelector(".aContainer");
                               aContainer.innerHTML = "";
 
-                              const links = stateLinks[code] || [];
-
-                              if (links.length === 0) {
-                                const p = document.createElement("p");
-                                p.textContent =
-                                  "Sorry, we do not have data yet";
-                                aContainer.appendChild(p);
-                              } else {
-                                // 중복 이름 카운팅
-                                const nameCount = {};
-                                links.forEach((linkObj) => {
-                                  const name = Object.keys(linkObj)[0];
-                                  nameCount[name] = (nameCount[name] || 0) + 1;
-                                });
-
-                                const nameIndex = {};
-                                links.forEach((linkObj) => {
-                                  const name = Object.keys(linkObj)[0];
-                                  const url = Object.values(linkObj)[0];
-
-                                  const a = document.createElement("a");
-                                  a.href = url;
-                                  a.target = "_blank";
-
-                                  if (nameCount[name] > 1) {
-                                    nameIndex[name] =
-                                      (nameIndex[name] || 0) + 1;
-                                    a.textContent = `${name} ${nameIndex[name]}`;
-                                  } else {
-                                    a.textContent = name;
-                                  }
-
-                                  aContainer.appendChild(a);
-                                });
-                              }
+                              renderViewUI(aContainer, code);
 
                               popup.style.pointerEvents = "none";
                               setTimeout(() => {
@@ -1703,7 +1787,7 @@
                               americaMap.classList.remove("active");
 
                               renderList(currentData);
-                              labelStates(canadaMap, "Canada", 34);
+                              labelStates(canadaMap, "Canada", 40);
                             }
 
                             function popupDisplayNone() {
@@ -1767,6 +1851,50 @@
                                     renderList(currentData);
                                   });
                                 });
+                            }
+
+                            /* ===== VIEW UI ===== */
+                            function renderViewUI(aContainer, code) {
+                              const links = stateLinks[code] || [];
+
+                              if (links.length === 0) {
+                                const p = document.createElement("p");
+                                p.textContent = "More information coming soon";
+                                aContainer.appendChild(p);
+                                return;
+                              }
+
+                              // Handle duplicate link names
+                              const nameCount = {};
+                              links.forEach((linkObj) => {
+                                nameCount[linkObj.name] =
+                                  (nameCount[linkObj.name] || 0) + 1;
+                              });
+
+                              const nameIndex = {};
+                              links.forEach((linkObj) => {
+                                const a = document.createElement("a");
+                                a.href = linkObj.url;
+                                a.target = "_blank";
+
+                                // Apply class
+                                if (linkObj.class) {
+                                  a.classList.add(linkObj.class);
+                                }
+
+                                // Handle duplicate names
+                                if (nameCount[linkObj.name] > 1) {
+                                  nameIndex[linkObj.name] =
+                                    (nameIndex[linkObj.name] || 0) + 1;
+                                  a.textContent = `${linkObj.name} ${
+                                    nameIndex[linkObj.name]
+                                  }`;
+                                } else {
+                                  a.textContent = linkObj.name;
+                                }
+
+                                aContainer.appendChild(a);
+                              });
                             }
 
                             /* ===== INIT ===== */

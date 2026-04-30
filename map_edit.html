@@ -689,16 +689,19 @@
 
                                 #popup_title {
                                   font-size: 30px !important;
+                                  font-weight: 600 !important;
+                                  text-transform: uppercase !important;
+                                  margin-bottom: 0 !important;
                                 }
 
                                 #closeBtn {
-                                  width: 28px;
-                                  height: 28px;
-                                  border: 1px solid #ddd;
-                                  border-radius: 6px;
                                   background: none;
                                   cursor: pointer;
                                   font-size: 14px;
+                                  border: none;
+                                  position: absolute;
+                                  top: 7px;
+                                  right: 7px;
                                 }
                               }
                             }
@@ -706,11 +709,56 @@
                             .aContainer {
                               display: flex;
                               flex-direction: column;
-
                               a {
-                                font-size: 30px;
+                                display: flex;
+                                gap: 10px;
+                                color: #454545;
+                                font-size: 18px;
+                                position: relative;
+                                line-height: 1.2;
+                                margin-bottom: 10px;
+                                border-bottom: 1px solid #ddd;
+                                padding-bottom: 10px;
+                                &::before {
+                                  content: "\f0ac";
+                                  color: var(--green);
+                                  font-family: "Font Awesome 7 Free";
+                                  font-weight: bold;
+                                  justify-content: right;
+                                  display: flex;
+                                  width: 40px;
+                                  transform: translateX(0);
+                                  transition: ease-out all 0.3s;
+                                }
+                                &.doc::before {
+                                  content: "\f15c";
+                                }
+                                &.pdf::before {
+                                  content: "\f1c1";
+                                }
+                                &.ppt::before {
+                                  content: "\f51b";
+                                }
+                                &.sheet::before {
+                                  content: "\f00a";
+                                }
+                                &.vid::before {
+                                  content: "\f167";
+                                  font-family: "Font Awesome 7 Brands";
+                                }
+                                &.web::before {
+                                  content: "\f0ac";
+                                }
+                                &:last-child {
+                                  border-bottom: 0;
+                                  padding-bottom: 0;
+                                  margin-bottom: 0;
+                                }
                                 &:hover {
-                                  color: #3c9650;
+                                  color: var(--green);
+                                  &::before {
+                                    transform: translateX(2px);
+                                  }
                                 }
                               }
                             }
@@ -761,16 +809,6 @@
                               }
                             }
                           }
-
-                          /* NEVER TOUCH THIS CODE ⬇️*/
-                          svg path {
-                            fill: #ddd;
-                            stroke: #333;
-                            stroke-width: 1.5;
-                            vector-effect: non-scaling-stroke;
-                            cursor: pointer;
-                          }
-                          /* NEVER TOUCH THIS CODE ⬆️*/
 
                           #US-ND,
                           #US-HI,
@@ -880,15 +918,15 @@
                             position: fixed;
                             bottom: 50px;
                             right: 190px;
-                          }
 
-                          #editmode.active {
-                            background: #3c9650;
-                            color: #fff;
-                          }
+                            &.active {
+                              background: #3c9650;
+                              color: #fff;
+                            }
 
-                          #editmode:hover {
-                            opacity: 0.85;
+                            &:hover {
+                              opacity: 0.85;
+                            }
                           }
 
                           /* ===== DOWNLOAD BUTTON ===== */
@@ -904,19 +942,18 @@
                             position: fixed;
                             bottom: 50px;
                             right: 50px;
+
+                            &:hover {
+                              opacity: 0.85;
+                            }
                           }
 
-                          #downloadBtn:hover {
-                            opacity: 0.85;
-                          }
-
-                          /* ===== EDIT MODE 활성화 시 지도 커서 ===== */
+                          /* ===== EDIT MODE  ===== */
                           body.edit-mode .state path.location {
                             cursor: crosshair;
                           }
 
                           body.edit-mode #editmode {
-                            /* 혹시 body class로 관리할 경우 */
                           }
 
                           /* ===== EDIT POPUP ===== */
@@ -942,40 +979,58 @@
                             border: 1px solid #ddd;
                             border-radius: 6px;
                             font-size: 14px;
+
+                            span {
+                              flex: 1;
+                              overflow: hidden;
+                              text-overflow: ellipsis;
+                              white-space: nowrap;
+                            }
+
+                            button {
+                              padding: 2px 8px;
+                              border-radius: 4px;
+                              border: none;
+                              cursor: pointer;
+                              font-size: 12px;
+                            }
+
+                            .btn-delete {
+                              background: #e74c3c;
+                              color: #fff;
+                            }
+
+                            .btn-edit {
+                              background: #f0ad4e;
+                              color: #fff;
+                            }
                           }
 
-                          .edit-link-item span {
-                            flex: 1;
-                            overflow: hidden;
-                            text-overflow: ellipsis;
-                            white-space: nowrap;
-                          }
-
-                          .edit-link-item button {
-                            padding: 2px 8px;
-                            border-radius: 4px;
-                            border: none;
-                            cursor: pointer;
-                            font-size: 12px;
-                          }
-
-                          .edit-link-item .btn-delete {
-                            background: #e74c3c;
-                            color: #fff;
-                          }
-
-                          .edit-link-item .btn-edit {
-                            background: #f0ad4e;
-                            color: #fff;
-                          }
-
-                          /* ===== ADD FORM ===== */
                           .edit-add-form {
                             display: flex;
                             flex-direction: column;
                             gap: 8px;
                             padding-top: 8px;
                             border-top: 1px solid #eee;
+
+                            input#customName {
+                              display: none;
+                            }
+
+                            .btn-add {
+                              padding: 6px 12px;
+                              background: #3c9650;
+                              color: #fff;
+                              border: none;
+                              border-radius: 6px;
+                              cursor: pointer;
+                              font-weight: 600;
+                              transition: opacity 0.2s;
+
+                              &:hover {
+                                opacity: 0.85;
+                              }
+                            }
                           }
 
                           .edit-add-form select,
@@ -989,30 +1044,12 @@
                             box-sizing: border-box;
                           }
 
-                          .edit-add-form input#customName {
-                            display: none;
-                          }
-
-                          .edit-add-form input#customName.visible {
+                          .edit-add-form
+                            .edit-add-form
+                            input#customName.visible {
                             display: block;
                           }
 
-                          .edit-add-form .btn-add {
-                            padding: 6px 12px;
-                            background: #3c9650;
-                            color: #fff;
-                            border: none;
-                            border-radius: 6px;
-                            cursor: pointer;
-                            font-weight: 600;
-                            transition: opacity 0.2s;
-                          }
-
-                          .edit-add-form .btn-add:hover {
-                            opacity: 0.85;
-                          }
-
-                          /* ===== EDIT MODE 배너 ===== */
                           #editmodeBanner {
                             display: none;
                             position: fixed;
@@ -1027,18 +1064,155 @@
                             font-size: 20px;
                             z-index: 9999;
                             height: 40px;
+                            &.active {
+                              display: block;
+                            }
                           }
 
-                          #editmodeBanner.active {
-                            display: block;
+                          .class-row {
+                            display: flex;
+                            align-items: center;
+                            gap: 8px;
+                            flex-wrap: wrap;
                           }
+
+                          .class-label {
+                            font-size: 13px;
+                            color: #555;
+                            white-space: nowrap;
+                          }
+
+                          .custom-class-select {
+                            position: relative;
+                            flex: 1;
+                            min-width: 160px;
+                            user-select: none;
+                          }
+
+                          .custom-class-trigger {
+                            display: flex;
+                            align-items: center;
+                            gap: 8px;
+                            width: 100%;
+                            padding: 6px 10px;
+                            border: 1px solid #ddd;
+                            border-radius: 6px;
+                            background: #fff;
+                            font-size: 13px;
+                            color: #333;
+                            cursor: pointer;
+                            text-align: left;
+                            box-sizing: border-box;
+
+                            i:first-child {
+                              color: var(--green, #4caf50);
+                              width: 16px;
+                              text-align: center;
+                              flex-shrink: 0;
+                            }
+
+                            span {
+                              flex: 1;
+                            }
+                          }
+
+                          .trigger-arrow {
+                            font-size: 10px;
+                            color: #999;
+                            transition: transform 0.2s ease;
+                            flex-shrink: 0;
+                          }
+
+                          .custom-class-trigger.open .trigger-arrow {
+                            transform: rotate(180deg);
+                          }
+
+                          .custom-class-list {
+                            display: none;
+                            position: absolute;
+                            top: calc(100% + 4px);
+                            left: 0;
+                            right: 0;
+                            background: #fff;
+                            border: 1px solid #ddd;
+                            border-radius: 6px;
+                            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+                            padding: 4px 0;
+                            margin: 0;
+                            list-style: none;
+                            z-index: 1000;
+                            padding: 0 !important;
+                            li {
+                              display: flex;
+                              align-items: center;
+                              gap: 8px;
+                              padding: 7px 12px;
+                              font-size: 13px;
+                              color: #333;
+                              cursor: pointer;
+                              transition: background 0.15s;
+                              &::before {
+                                content: "";
+
+                                display: none;
+                              }
+
+                              &:hover {
+                                background: #f5f5f5;
+                              }
+                              &:active {
+                                background: #e8f5e9;
+                                color: var(--green, #4caf50);
+                                font-weight: 600;
+                              }
+
+                              i {
+                                color: var(--green, #4caf50);
+                                width: 16px;
+                                text-align: center;
+                                flex-shrink: 0;
+                              }
+                            }
+
+                            &.open {
+                              display: block;
+                            }
+                          }
+
+                          .infer-badge {
+                            display: inline-block;
+                            padding: 3px 8px;
+                            border-radius: 12px;
+                            font-size: 11px;
+                            font-weight: 600;
+                            background: #e8f5e9;
+                            color: var(--green, #4caf50);
+                            border: 1px solid var(--green, #4caf50);
+                            white-space: nowrap;
+                          }
+
+                          .edit-link-icon {
+                            font-size: 14px;
+                            color: var(--green, #4caf50);
+                            width: 18px;
+                            flex-shrink: 0;
+                          }
+
+                          /* NEVER TOUCH THIS CODE ⬇️*/
+                          svg path {
+                            fill: #ddd;
+                            stroke: #333;
+                            stroke-width: 1.5;
+                            vector-effect: non-scaling-stroke;
+                            cursor: pointer;
+                          }
+                          /* NEVER TOUCH THIS CODE ⬆️*/
                         </style>
 
                         <div>
-                          <!-- 기존 버튼들 근처에 추가 -->
                           <button id="editmode">Edit Mode</button>
                           <button id="downloadBtn">Download CSV</button>
-                          <!-- body 최상단에 -->
+
                           <div id="editmodeBanner">
                             ⚠️ Edit Mode ON — Click any state to edit
                           </div>
@@ -1437,6 +1611,90 @@
                             provinceNames,
                             stateLinks;
 
+                          /* ===== CLASS OPTIONS ===== */
+                          const CLASS_OPTIONS = [
+                            {
+                              value: "",
+                              label: "Web (Default)",
+                              icon: "\uf0ac",
+                            },
+                            { value: "web", label: "Web", icon: "\uf0ac" },
+                            { value: "doc", label: "Document", icon: "\uf15c" },
+                            { value: "pdf", label: "PDF", icon: "\uf1c1" },
+                            {
+                              value: "ppt",
+                              label: "PowerPoint",
+                              icon: "\uf51b",
+                            },
+                            {
+                              value: "sheet",
+                              label: "Spreadsheet",
+                              icon: "\uf00a",
+                            },
+                            {
+                              value: "vid",
+                              label: "Video (YouTube)",
+                              icon: "\uf167",
+                            },
+                          ];
+
+                          /* ===== URL → CLASS INFERENCE ===== */
+                          function inferClass(url) {
+                            if (!url) return "";
+                            const lower = url.toLowerCase();
+
+                            if (
+                              lower.includes("youtube.com") ||
+                              lower.includes("youtu.be") ||
+                              lower.includes("vimeo.com")
+                            )
+                              return "vid";
+                            if (
+                              lower.includes("docs.google.com/spreadsheets") ||
+                              lower.includes("sheets.google.com")
+                            )
+                              return "sheet";
+                            if (
+                              lower.includes("docs.google.com/presentation") ||
+                              lower.includes("slides.google.com")
+                            )
+                              return "ppt";
+                            if (lower.includes("docs.google.com")) return "doc";
+                            if (lower.match(/\.pdf(\?|$)/)) return "pdf";
+                            if (lower.match(/\.(doc|docx)(\?|$)/)) return "doc";
+                            if (lower.match(/\.(ppt|pptx)(\?|$)/)) return "ppt";
+                            if (lower.match(/\.(xls|xlsx|csv)(\?|$)/))
+                              return "sheet";
+
+                            return "web";
+                          }
+
+                          /* ===== LEGACY FORMAT MIGRATION (backward compatible) =====
+   old: { "Link Name": "URL" }
+   new: { name: "Link Name", url: "URL", class: "pdf" }
+*/
+                          function normalizeLinkObj(linkObj) {
+                            // Already in new format
+                            if (
+                              linkObj.name !== undefined &&
+                              linkObj.url !== undefined
+                            ) {
+                              return {
+                                name: linkObj.name,
+                                url: linkObj.url,
+                                class: linkObj.class || "",
+                              };
+                            }
+                            // Convert from legacy format
+                            const name = Object.keys(linkObj)[0];
+                            const url = Object.values(linkObj)[0];
+                            return {
+                              name,
+                              url,
+                              class: inferClass(url),
+                            };
+                          }
+
                           async function jsonFetch() {
                             const res = await fetch("./map.csv");
                             const text = await res.text();
@@ -1462,7 +1720,9 @@
                               let links = [];
                               if (jsonPart) {
                                 try {
-                                  links = JSON.parse(jsonPart);
+                                  const raw = JSON.parse(jsonPart);
+                                  // Normalize (handles both old and new formats)
+                                  links = raw.map(normalizeLinkObj);
                                 } catch (e) {
                                   links = [];
                                 }
@@ -1521,7 +1781,7 @@
                             function labelStates(
                               svgContainer,
                               prefix,
-                              fontScale = 40
+                              fontScale = 48
                             ) {
                               svgContainer
                                 .querySelectorAll("[data-auto]")
@@ -1546,7 +1806,7 @@
                                   FL: { x: 765 },
                                   NY: { y: 164 },
                                   AK: { x: 120, y: 500 },
-                                  VT: { x: 800, y: 90 },
+                                  VT: { x: 795, y: 90 },
                                   NH: { x: 845, y: 80 },
                                   MA: { x: 915, y: 132 },
                                   RI: { x: 930, y: 165 },
@@ -1586,18 +1846,20 @@
                                 .querySelectorAll(`[id^="${prefix}-"]`)
                                 .forEach((el) => {
                                   const label = el.id.replace(`${prefix}-`, "");
-
                                   const bbox = el.getBBox();
                                   const cx = bbox.x + bbox.width / 2;
                                   const cy = bbox.y + bbox.height / 2;
-
                                   const ov = overrides[label] || {};
                                   const x = ov.x ?? cx;
                                   const y = ov.y ?? cy;
 
+                                  const targetPath = document.getElementById(
+                                    `${prefix}-${label}`
+                                  );
+
                                   if (hidden.has(label)) {
-                                    const boxW = fontSize * 1.8;
-                                    const boxH = fontSize * 1;
+                                    const boxW = fontSize * 2.2;
+                                    const boxH = fontSize * 1.2;
 
                                     const line = document.createElementNS(
                                       "http://www.w3.org/2000/svg",
@@ -1628,7 +1890,30 @@
                                     rect.setAttribute("fill-opacity", "1");
                                     rect.setAttribute("rx", 3);
                                     rect.setAttribute("data-auto", "true");
+                                    rect.setAttribute("cursor", "pointer");
                                     svg.appendChild(rect);
+
+                                    rect.addEventListener("click", () => {
+                                      selectedValue = label;
+                                      const name =
+                                        currentCountry === "America"
+                                          ? stateNames[label]
+                                          : provinceNames[label];
+                                      if (name) {
+                                        openPopup(name, label);
+                                        highlightState_StateClick(
+                                          `${prefix}-${label}`
+                                        );
+                                        renderList(currentData);
+                                      }
+                                    });
+                                    rect.addEventListener("mouseenter", () => {
+                                      targetPath.style.filter =
+                                        "brightness(1.2)";
+                                    });
+                                    rect.addEventListener("mouseleave", () => {
+                                      targetPath.style.filter = "brightness(1)";
+                                    });
                                   }
 
                                   const text = document.createElementNS(
@@ -1649,11 +1934,6 @@
                                   text.setAttribute("cursor", "pointer");
                                   text.textContent = label;
 
-                                  const targetPath = document.getElementById(
-                                    `${prefix}-${label}`
-                                  );
-
-                                  // 클릭 → 팝업
                                   text.addEventListener("click", () => {
                                     selectedValue = label;
                                     const name =
@@ -1669,7 +1949,6 @@
                                     }
                                   });
 
-                                  // hover → path 색상 변경 (path + text 둘 다)
                                   const hoverOn = () => {
                                     targetPath.style.filter = "brightness(1.2)";
                                   };
@@ -1747,7 +2026,6 @@
                                     isOpen = false;
                                     renderList(data);
                                     stateList.classList.toggle("open");
-
                                     const name =
                                       currentCountry === "America"
                                         ? stateNames[item]
@@ -1825,7 +2103,7 @@
                               americaMap.classList.remove("active");
 
                               renderList(currentData);
-                              labelStates(canadaMap, "Canada", 34);
+                              labelStates(canadaMap, "Canada", 40);
                             }
 
                             function popupDisplayNone() {
@@ -1901,10 +2179,10 @@
                                 document
                                   .getElementById("editmodeBanner")
                                   .classList.toggle("active", isEditMode);
-                                // 팝업 닫기
                                 closePopup();
                               });
 
+                            /* ===== VIEW UI ===== */
                             function renderViewUI(aContainer, code) {
                               const links = stateLinks[code] || [];
 
@@ -1916,32 +2194,40 @@
                                 return;
                               }
 
+                              // Handle duplicate link names
                               const nameCount = {};
                               links.forEach((linkObj) => {
-                                const name = Object.keys(linkObj)[0];
-                                nameCount[name] = (nameCount[name] || 0) + 1;
+                                nameCount[linkObj.name] =
+                                  (nameCount[linkObj.name] || 0) + 1;
                               });
 
                               const nameIndex = {};
                               links.forEach((linkObj) => {
-                                const name = Object.keys(linkObj)[0];
-                                const url = Object.values(linkObj)[0];
-
                                 const a = document.createElement("a");
-                                a.href = url;
+                                a.href = linkObj.url;
                                 a.target = "_blank";
 
-                                if (nameCount[name] > 1) {
-                                  nameIndex[name] = (nameIndex[name] || 0) + 1;
-                                  a.textContent = `${name} ${nameIndex[name]}`;
+                                // Apply class
+                                if (linkObj.class) {
+                                  a.classList.add(linkObj.class);
+                                }
+
+                                // Handle duplicate names
+                                if (nameCount[linkObj.name] > 1) {
+                                  nameIndex[linkObj.name] =
+                                    (nameIndex[linkObj.name] || 0) + 1;
+                                  a.textContent = `${linkObj.name} ${
+                                    nameIndex[linkObj.name]
+                                  }`;
                                 } else {
-                                  a.textContent = name;
+                                  a.textContent = linkObj.name;
                                 }
 
                                 aContainer.appendChild(a);
                               });
                             }
 
+                            /* ===== PRESET NAMES ===== */
                             const PRESET_NAMES = [
                               "Hot-In-Place Recycling",
                               "Cold Recycling",
@@ -1951,10 +2237,11 @@
                               "Cold Planing",
                             ];
 
+                            /* ===== EDIT UI ===== */
                             function renderEditUI(aContainer, code) {
-                              const links = stateLinks[code] || [];
+                              if (!stateLinks[code]) stateLinks[code] = [];
 
-                              // ── 기존 링크 목록 ──
+                              // ── Existing link list ──
                               const listDiv = document.createElement("div");
                               listDiv.classList.add("edit-link-list");
 
@@ -1972,52 +2259,81 @@
                                 }
 
                                 currentLinks.forEach((linkObj, idx) => {
-                                  const name = Object.keys(linkObj)[0];
-                                  const url = Object.values(linkObj)[0];
-
                                   const item = document.createElement("div");
                                   item.classList.add("edit-link-item");
 
+                                  // Icon preview (using Font Awesome classes)
+                                  const iconPreview =
+                                    document.createElement("i");
+                                  const classVal = linkObj.class || "";
+                                  if (classVal === "vid") {
+                                    iconPreview.className =
+                                      "fa-brands fa-youtube edit-link-icon";
+                                  } else if (classVal === "doc") {
+                                    iconPreview.className =
+                                      "fa-regular fa-file-lines edit-link-icon";
+                                  } else if (classVal === "pdf") {
+                                    iconPreview.className =
+                                      "fa-regular fa-file-pdf edit-link-icon";
+                                  } else if (classVal === "ppt") {
+                                    iconPreview.className =
+                                      "fa-regular fa-file-powerpoint edit-link-icon";
+                                  } else if (classVal === "sheet") {
+                                    iconPreview.className =
+                                      "fa-solid fa-table-cells edit-link-icon";
+                                  } else {
+                                    iconPreview.className =
+                                      "fa-solid fa-globe edit-link-icon";
+                                  }
+
                                   const span = document.createElement("span");
-                                  span.title = `${name} — ${url}`;
-                                  span.textContent = `${name} → ${url}`;
+                                  span.title = `${linkObj.name} — ${linkObj.url}`;
+                                  span.textContent = `${linkObj.name} → ${linkObj.url}`;
 
                                   const btnEdit =
                                     document.createElement("button");
                                   btnEdit.classList.add("btn-edit");
                                   btnEdit.textContent = "Edit";
                                   btnEdit.addEventListener("click", () => {
-                                    // 선택란에 기존 값 채우기
-                                    const nameVal = name;
-                                    const isPreset =
-                                      PRESET_NAMES.includes(nameVal);
+                                    // Populate existing values
+                                    const isPreset = PRESET_NAMES.includes(
+                                      linkObj.name
+                                    );
                                     nameSelect.value = isPreset
-                                      ? nameVal
+                                      ? linkObj.name
                                       : "custom";
                                     if (!isPreset) {
-                                      customNameInput.value = nameVal;
+                                      customNameInput.value = linkObj.name;
                                       customNameInput.classList.add("visible");
+                                      customNameInput.disabled = false;
                                     } else {
                                       customNameInput.value = "";
                                       customNameInput.classList.remove(
                                         "visible"
                                       );
+                                      customNameInput.disabled = true;
                                     }
-                                    urlInput.value = url;
-                                    addBtn.textContent = "Update";
+                                    urlInput.value = linkObj.url;
+                                    classSelect.value = linkObj.class || "";
 
-                                    // 업데이트 시 해당 idx 교체
+                                    // Hide auto-detect badge (manual edit mode)
+                                    inferBadge.style.display = "none";
+
+                                    addBtn.textContent = "Update";
                                     addBtn.onclick = () => {
                                       const updatedName =
                                         nameSelect.value === "custom"
                                           ? customNameInput.value.trim()
                                           : nameSelect.value;
                                       const updatedUrl = urlInput.value.trim();
+                                      const updatedClass = classSelect.value;
 
                                       if (!updatedName || !updatedUrl) return;
 
                                       stateLinks[code][idx] = {
-                                        [updatedName]: updatedUrl,
+                                        name: updatedName,
+                                        url: updatedUrl,
+                                        class: updatedClass,
                                       };
                                       resetForm();
                                       refreshList();
@@ -2033,6 +2349,7 @@
                                     refreshList();
                                   });
 
+                                  item.appendChild(iconPreview);
                                   item.appendChild(span);
                                   item.appendChild(btnEdit);
                                   item.appendChild(btnDelete);
@@ -2042,10 +2359,11 @@
 
                               refreshList();
 
-                              // ── 추가 폼 ──
+                              // ── Add form ──
                               const form = document.createElement("div");
                               form.classList.add("edit-add-form");
 
+                              // Name select
                               const nameSelect =
                                 document.createElement("select");
                               const defaultOpt =
@@ -2070,22 +2388,194 @@
                               const customNameInput =
                                 document.createElement("input");
                               customNameInput.type = "text";
-                              customNameInput.id = "customName";
                               customNameInput.placeholder = "Enter custom name";
+                              customNameInput.disabled = true;
 
                               nameSelect.addEventListener("change", () => {
                                 if (nameSelect.value === "custom") {
                                   customNameInput.classList.add("visible");
+                                  customNameInput.disabled = false;
+                                  customNameInput.focus();
                                 } else {
                                   customNameInput.classList.remove("visible");
+                                  customNameInput.disabled = true;
                                   customNameInput.value = "";
                                 }
                               });
 
+                              // URL input
                               const urlInput = document.createElement("input");
                               urlInput.type = "url";
                               urlInput.placeholder = "https://example.com";
 
+                              // Auto-detect badge
+                              const inferBadge = document.createElement("span");
+                              inferBadge.classList.add("infer-badge");
+                              inferBadge.style.display = "none";
+
+                              // Auto-infer class on URL input
+                              urlInput.addEventListener("input", () => {
+                                const inferred = inferClass(
+                                  urlInput.value.trim()
+                                );
+                                classSelect.value = inferred;
+
+                                if (inferred) {
+                                  const found = CLASS_OPTIONS.find(
+                                    (o) => o.value === inferred
+                                  );
+                                  inferBadge.textContent = `Detected: ${
+                                    found ? found.label : inferred
+                                  }`;
+                                  inferBadge.style.display = "inline-block";
+                                } else {
+                                  inferBadge.style.display = "none";
+                                }
+                              });
+
+                              // Class selector (custom dropdown)
+                              const classLabel =
+                                document.createElement("label");
+                              classLabel.textContent = "Type";
+                              classLabel.classList.add("class-label");
+
+                              // Font Awesome class mapping helper
+                              function getFaClass(val) {
+                                if (val === "vid")
+                                  return "fa-brands fa-youtube";
+                                if (val === "doc")
+                                  return "fa-regular fa-file-lines";
+                                if (val === "pdf")
+                                  return "fa-regular fa-file-pdf";
+                                if (val === "ppt")
+                                  return "fa-regular fa-file-powerpoint";
+                                if (val === "sheet")
+                                  return "fa-solid fa-table-cells";
+                                return "fa-solid fa-globe";
+                              }
+
+                              // Custom dropdown wrapper
+                              const customDropWrap =
+                                document.createElement("div");
+                              customDropWrap.classList.add(
+                                "custom-class-select"
+                              );
+
+                              // Trigger button showing selected value
+                              const dropTrigger =
+                                document.createElement("button");
+                              dropTrigger.type = "button";
+                              dropTrigger.classList.add("custom-class-trigger");
+
+                              const triggerIcon = document.createElement("i");
+                              const triggerText =
+                                document.createElement("span");
+                              const triggerArrow = document.createElement("i");
+                              triggerArrow.className =
+                                "fa-solid fa-chevron-down trigger-arrow";
+
+                              dropTrigger.appendChild(triggerIcon);
+                              dropTrigger.appendChild(triggerText);
+                              dropTrigger.appendChild(triggerArrow);
+
+                              // Options list
+                              const dropList = document.createElement("ul");
+                              dropList.classList.add("custom-class-list");
+
+                              // Interface object acting as classSelect
+                              // Preserves classSelect.value / classSelect.addEventListener pattern
+                              let _classValue = "";
+                              const _changeListeners = [];
+                              const classSelect = {
+                                get value() {
+                                  return _classValue;
+                                },
+                                set value(val) {
+                                  _classValue = val;
+                                  renderTrigger(val);
+                                  // Update active state
+                                  dropList
+                                    .querySelectorAll("li")
+                                    .forEach((li) => {
+                                      li.classList.toggle(
+                                        "active",
+                                        li.dataset.value === val
+                                      );
+                                    });
+                                },
+                                addEventListener(event, fn) {
+                                  if (event === "change")
+                                    _changeListeners.push(fn);
+                                },
+                              };
+
+                              function renderTrigger(val) {
+                                const found = CLASS_OPTIONS.find(
+                                  (o) => o.value === val
+                                );
+                                if (found) {
+                                  triggerIcon.className = getFaClass(val);
+                                  triggerText.textContent = found.label;
+                                } else {
+                                  triggerIcon.className = "";
+                                  triggerText.textContent = "-- Select Type --";
+                                }
+                              }
+
+                              // Initial render
+                              renderTrigger("");
+
+                              // Build options
+                              CLASS_OPTIONS.forEach((opt) => {
+                                const li = document.createElement("li");
+                                li.dataset.value = opt.value;
+
+                                const ico = document.createElement("i");
+                                ico.className = getFaClass(opt.value);
+
+                                const txt = document.createElement("span");
+                                txt.textContent = opt.label;
+
+                                li.appendChild(ico);
+                                li.appendChild(txt);
+
+                                li.addEventListener("click", () => {
+                                  classSelect.value = opt.value;
+                                  dropList.classList.remove("open");
+                                  dropTrigger.classList.remove("open");
+                                  // Dispatch change event
+                                  _changeListeners.forEach((fn) => fn());
+                                });
+
+                                dropList.appendChild(li);
+                              });
+
+                              // Toggle list on trigger click
+                              dropTrigger.addEventListener("click", (e) => {
+                                e.stopPropagation();
+                                const isOpen =
+                                  dropList.classList.toggle("open");
+                                dropTrigger.classList.toggle("open", isOpen);
+                              });
+
+                              // Close on outside click
+                              document.addEventListener("click", () => {
+                                dropList.classList.remove("open");
+                                dropTrigger.classList.remove("open");
+                              });
+
+                              customDropWrap.appendChild(dropTrigger);
+                              customDropWrap.appendChild(dropList);
+
+                              // Hide badge on manual change (preserving existing pattern)
+                              classSelect.addEventListener("change", () => {
+                                inferBadge.style.display = "none";
+                              });
+
+                              // iconPreviewWrap removed (icon is shown inside the dropdown itself)
+                              const iconPreviewWrap = { innerHTML: "" }; // Backward-compat dummy
+
+                              // Add button
                               const addBtn = document.createElement("button");
                               addBtn.classList.add("btn-add");
                               addBtn.textContent = "Add";
@@ -2094,7 +2584,11 @@
                                 nameSelect.value = "";
                                 customNameInput.value = "";
                                 customNameInput.classList.remove("visible");
+                                customNameInput.disabled = true;
                                 urlInput.value = "";
+                                classSelect.value = "";
+                                inferBadge.style.display = "none";
+                                iconPreviewWrap.innerHTML = "";
                                 addBtn.textContent = "Add";
                                 addBtn.onclick = handleAdd;
                               }
@@ -2105,11 +2599,16 @@
                                     ? customNameInput.value.trim()
                                     : nameSelect.value;
                                 const url = urlInput.value.trim();
+                                const classValue = classSelect.value;
 
                                 if (!selectedName || !url) return;
 
                                 if (!stateLinks[code]) stateLinks[code] = [];
-                                stateLinks[code].push({ [selectedName]: url });
+                                stateLinks[code].push({
+                                  name: selectedName,
+                                  url: url,
+                                  class: classValue,
+                                });
 
                                 resetForm();
                                 refreshList();
@@ -2117,9 +2616,17 @@
 
                               addBtn.onclick = handleAdd;
 
+                              // Class row (label + custom dropdown + badge)
+                              const classRow = document.createElement("div");
+                              classRow.classList.add("class-row");
+                              classRow.appendChild(classLabel);
+                              classRow.appendChild(customDropWrap);
+                              classRow.appendChild(inferBadge);
+
                               form.appendChild(nameSelect);
                               form.appendChild(customNameInput);
                               form.appendChild(urlInput);
+                              form.appendChild(classRow);
                               form.appendChild(addBtn);
 
                               aContainer.classList.add("edit-popup-content");
@@ -2127,6 +2634,7 @@
                               aContainer.appendChild(form);
                             }
 
+                            /* ===== DOWNLOAD (save as new format) ===== */
                             document
                               .getElementById("downloadBtn")
                               .addEventListener("click", () => {
