@@ -1385,7 +1385,7 @@
                           }
 
                           async function jsonFetch() {
-                            const res = await fetch("./map.csv");
+                            const res = await fetch("./map_merged.csv");
                             const text = await res.text();
 
                             const rows = text.trim().split("\n").slice(1);
